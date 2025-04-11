@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>シンプルアラーム</title>
+  <style>
+    body { font-family: sans-serif; margin: 2rem; }
+    h1 { color: #333; }
+    input, button { font-size: 1rem; padding: 0.5rem; }
+  </style>
+</head>
+<body>
+  <h1>シンプルアラーム</h1>
+  <p>アラームを設定する時刻を入力してください。</p>
+  <input type="time" id="alarmTime">
+  <button onclick="setAlarm()">アラーム設定</button>
+
+  <script>
+    /**
+     * 入力された時刻に基づいてアラームを設定する関数
+     */
+    function setAlarm() {
+      const input = document.getElementById('alarmTime').value;
+      if (!input) { 
+        alert("時刻を入力してください。");
+        return; 
+      }
+      const timeParts = input.split(':');
+      const alarmDate = new Date();
+      // 入力された時刻をセット（秒・ミリ秒は 0 に固定）
+      alarmDate.setHours(parseInt(timeParts[0], 10));
+      alarmDate.setMinutes(parseInt(timeParts[1], 10));
+      alarmDate.setSeconds(0);
+      alarmDate.setMilliseconds(0);
+
+      const now = new Date();
+      // 入力時刻が既に過ぎている場合は翌日に設定
+      if (alarmDate <= now) {
+        alarmDate.setDate(alarmDate.getDate() + 1);
+      }
+      const timeout = alarmDate.getTime() - now.getTime();
+      console.log("アラーム設定時刻:", alarmDate);
+      setTimeout(triggerAlarm, timeout);
+      alert("アラームを " + alarmDate.toLocaleString() + " に設定しました。");
+    }
+
+    /**
+     * アラーム発動時の処理
+     */
+    function triggerAlarm() {
+      alert("アラーム！指定時刻になりました。");
+      // 【任意】下記のコメントを外して、アラーム音を再生できるようにする場合は音声ファイルを用意してください
+      // var audio = new Audio('alarm.mp3');
+      // audio.play();
+    }
+  </script>
+</body>
+</html>
