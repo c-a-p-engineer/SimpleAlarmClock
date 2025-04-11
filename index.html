@@ -2,56 +2,321 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>シンプルアラーム</title>
+  <title>マルチアラーム - クールなデザイン</title>
   <style>
-    body { font-family: sans-serif; margin: 2rem; }
-    h1 { color: #333; }
-    input, button { font-size: 1rem; padding: 0.5rem; }
+    /* 全体のレイアウトと色調設定 */
+    body {
+      background: #1f1f1f;
+      color: #e0e0e0;
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      text-align: center;
+      padding: 2rem 1rem;
+      background: #333;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+    h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+    section {
+      padding: 1rem 2rem;
+    }
+    /* 設定エリア */
+    .config {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid #444;
+      padding-bottom: 1rem;
+    }
+    .config-input {
+      flex: 1 1 300px;
+      margin-right: 1rem;
+    }
+    .config-input label {
+      font-size: 1.2rem;
+      margin-right: 0.5rem;
+    }
+    .config-input input[type="time"] {
+      font-size: 1.2rem;
+      padding: 0.5rem;
+      margin-right: 0.5rem;
+      border: none;
+      border-radius: 4px;
+      outline: none;
+    }
+    .config-input button {
+      font-size: 1rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      background-color: #4CAF50;
+      color: #fff;
+      transition: background-color 0.3s;
+    }
+    .config-input button:hover {
+      background-color: #45a049;
+    }
+    .config-display {
+      flex: 1 1 300px;
+      display: flex;
+      justify-content: space-around;
+      background: #2b2b2b;
+      border-radius: 4px;
+      padding: 1rem;
+    }
+    .config-display div {
+      text-align: center;
+    }
+    .config-display h3 {
+      margin-bottom: 0.5rem;
+      border-bottom: 1px solid #555;
+      padding-bottom: 0.2rem;
+    }
+    .config-display p {
+      font-size: 1.2rem;
+      margin: 0;
+    }
+    /* アラーム一覧 */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    th, td {
+      padding: 0.75rem;
+      text-align: center;
+      border-bottom: 1px solid #444;
+    }
+    th {
+      background: #333;
+    }
+    tr.active {
+      background-color: #b71c1c;
+    }
+    tr.inactive:hover {
+      background-color: #2a2a2a;
+    }
+    button.delete {
+      background-color: #e53935;
+      border: none;
+      border-radius: 4px;
+      color: #fff;
+      padding: 0.4rem 0.8rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button.delete:hover {
+      background-color: #d32f2f;
+    }
+    /* アクティブアラーム表示 */
+    .active-alarm {
+      text-align: center;
+      padding: 1rem;
+      background: #b71c1c;
+      border-radius: 4px;
+      margin-top: 2rem;
+    }
+    .active-alarm button {
+      background-color: #0d47a1;
+      border: none;
+      border-radius: 4px;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .active-alarm button:hover {
+      background-color: #1565c0;
+    }
   </style>
 </head>
 <body>
-  <h1>シンプルアラーム</h1>
-  <p>アラームを設定する時刻を入力してください。</p>
-  <input type="time" id="alarmTime">
-  <button onclick="setAlarm()">アラーム設定</button>
-
+  <header>
+    <h1>マルチアラーム</h1>
+  </header>
+  
+  <!-- 設定エリア：左側が選択中、右側が設定中の値 -->
+  <section class="config">
+    <div class="config-input">
+      <label for="alarmTime">時刻入力:</label>
+      <input type="time" id="alarmTime" onchange="updateSelectedTime()">
+      <button onclick="addAlarm()">アラーム追加</button>
+    </div>
+    <div class="config-display">
+      <div class="selected">
+        <h3>選択中</h3>
+        <p id="selectedDisplay">--:--</p>
+      </div>
+      <div class="set">
+        <h3>設定中</h3>
+        <p id="setDisplay">なし</p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- 設定済みアラーム一覧 -->
+  <section class="alarms">
+    <h2>設定済みアラーム一覧</h2>
+    <table id="alarmsTable">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>設定時刻</th>
+          <th>状態</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </section>
+  
+  <!-- アクティブアラーム表示 -->
+  <section class="active-alarm" id="activeAlarmSection" style="display:none;">
+    <h2>アクティブアラーム</h2>
+    <p>アラーム発動中！</p>
+    <button onclick="stopAlarm()">停止</button>
+  </section>
+  
+  <!-- アラーム音（ループ再生） -->
+  <audio id="alarmAudio" src="zunda_time.wav" loop></audio>
+  
   <script>
+    // アラーム情報を格納する配列とカウンタ
+    let alarms = [];
+    let alarmCount = 0;
+    let isAlarmRinging = false;
+    
     /**
-     * 入力された時刻に基づいてアラームを設定する関数
+     * 入力フィールドの値が変わった際に選択中の表示を更新
      */
-    function setAlarm() {
+    function updateSelectedTime() {
+      const inputVal = document.getElementById('alarmTime').value;
+      document.getElementById('selectedDisplay').innerText = inputVal ? inputVal : "--:--";
+    }
+    
+    /**
+     * 入力された時刻に基づいてアラームを設定し、タイマーを登録します。
+     */
+    function addAlarm() {
       const input = document.getElementById('alarmTime').value;
       if (!input) { 
         alert("時刻を入力してください。");
-        return; 
+        return;
       }
       const timeParts = input.split(':');
-      const alarmDate = new Date();
-      // 入力された時刻をセット（秒・ミリ秒は 0 に固定）
+      const now = new Date();
+      let alarmDate = new Date();
       alarmDate.setHours(parseInt(timeParts[0], 10));
       alarmDate.setMinutes(parseInt(timeParts[1], 10));
       alarmDate.setSeconds(0);
       alarmDate.setMilliseconds(0);
-
-      const now = new Date();
-      // 入力時刻が既に過ぎている場合は翌日に設定
+      
+      // 入力時刻が過ぎている場合は翌日に設定
       if (alarmDate <= now) {
         alarmDate.setDate(alarmDate.getDate() + 1);
       }
+      
       const timeout = alarmDate.getTime() - now.getTime();
-      console.log("アラーム設定時刻:", alarmDate);
-      setTimeout(triggerAlarm, timeout);
+      
+      // タイマーでアラーム発動を予約
+      const timerId = setTimeout(() => { triggerAlarm(alarmCount); }, timeout);
+      
+      // アラーム情報を配列に保存
+      alarms.push({
+        id: alarmCount,
+        time: alarmDate,
+        timerId: timerId,
+        active: false
+      });
+      
+      // 最新の設定済み値として表示（右側）
+      document.getElementById('setDisplay').innerText = alarmDate.toLocaleTimeString();
+      
+      alarmCount++;
+      updateAlarmsTable();
       alert("アラームを " + alarmDate.toLocaleString() + " に設定しました。");
     }
-
+    
     /**
-     * アラーム発動時の処理
+     * アラーム一覧テーブルを更新します。
      */
-    function triggerAlarm() {
-      alert("アラーム！指定時刻になりました。");
-      // 【任意】下記のコメントを外して、アラーム音を再生できるようにする場合は音声ファイルを用意してください
-      // var audio = new Audio('alarm.mp3');
-      // audio.play();
+    function updateAlarmsTable() {
+      const tableBody = document.getElementById('alarmsTable').getElementsByTagName('tbody')[0];
+      tableBody.innerHTML = '';
+      alarms.forEach((alarm, index) => {
+        const row = tableBody.insertRow();
+        row.id = "alarm_" + alarm.id;
+        row.className = alarm.active ? "active" : "inactive";
+        const cell1 = row.insertCell(0);
+        const cell2 = row.insertCell(1);
+        const cell3 = row.insertCell(2);
+        const cell4 = row.insertCell(3);
+        
+        cell1.innerText = index + 1;
+        cell2.innerText = alarm.time.toLocaleTimeString();
+        cell3.innerText = alarm.active ? "アクティブ" : "非アクティブ";
+        cell4.innerHTML = `<button class="delete" onclick="removeAlarm(${alarm.id})">削除</button>`;
+      });
+    }
+    
+    /**
+     * 指定した ID のアラームを削除します。
+     * @param {number} id - アラームのID
+     */
+    function removeAlarm(id) {
+      const index = alarms.findIndex(alarm => alarm.id === id);
+      if (index !== -1) {
+        clearTimeout(alarms[index].timerId);
+        alarms.splice(index, 1);
+        updateAlarmsTable();
+      }
+    }
+    
+    /**
+     * アラーム発動時の処理。
+     * 既にアラームが鳴っていなければ、アラーム音を再生し、画面に表示します。
+     * 複数のアラームが同時に発動しても、音は一度だけ再生されます。
+     * @param {number} id - 発動したアラームのID
+     */
+    function triggerAlarm(id) {
+      if (!isAlarmRinging) {
+        isAlarmRinging = true;
+        document.getElementById('activeAlarmSection').style.display = 'block';
+        const audio = document.getElementById('alarmAudio');
+        audio.currentTime = 0;
+        audio.play();
+      }
+      // 発動済みアラームをアクティブ状態に設定し一覧を更新
+      const alarm = alarms.find(alarm => alarm.id === id);
+      if (alarm) {
+        alarm.active = true;
+        updateAlarmsTable();
+      }
+    }
+    
+    /**
+     * 【停止】ボタン押下時の処理。
+     * アラーム音の再生を停止し、アクティブ状態のアラームを一覧から削除します。
+     */
+    function stopAlarm() {
+      if (isAlarmRinging) {
+        const audio = document.getElementById('alarmAudio');
+        audio.pause();
+        isAlarmRinging = false;
+        document.getElementById('activeAlarmSection').style.display = 'none';
+        // 発動済みのアラーム（active: true）のエントリを削除
+        alarms = alarms.filter(alarm => !alarm.active);
+        updateAlarmsTable();
+      }
     }
   </script>
 </body>
