@@ -2,6 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
+  <!-- レスポンシブ対応 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Multi Alarm App - Improved UI/UX</title>
   <style>
@@ -33,11 +34,11 @@
       color: var(--text-color);
       font-family: var(--font-family);
       line-height: 1.6;
-      padding: 1.5rem 1rem; /* 上下のパディングを増やす */
-      font-size: 16px; /* ベースフォントサイズ */
+      padding: 1.5rem 1rem;
+      font-size: 16px;
     }
     .container {
-      max-width: 900px; /* コンテナ幅を少し広げる */
+      max-width: 900px;
       margin: 0 auto;
       padding: 0 1rem;
     }
@@ -45,30 +46,30 @@
     /* --- Header & Current Time --- */
     header { text-align: center; margin-bottom: 2rem; }
     header h1 {
-      font-size: 2.8rem; /* 少し大きく */
+      font-size: 2.8rem;
       margin-bottom: 0.5rem;
       font-weight: 700;
-      color: #fff; /* ヘッダーは白 */
+      color: #fff;
     }
     #currentTimeDisplay {
-      font-size: 1.8rem; /* 現在時刻のサイズ */
+      font-size: 1.8rem;
       color: var(--text-muted-color);
-      margin-bottom: 2rem; /* 下マージン追加 */
-      font-weight: 300; /* 細めのフォントウェイト */
+      margin-bottom: 2rem;
+      font-weight: 300;
       letter-spacing: 1px;
     }
 
     /* --- Card Styles --- */
     .card {
       background-color: var(--card-bg-color);
-      border-radius: 12px; /* 角丸を大きく */
-      padding: 1.5rem; /* パディングを増やす */
-      margin-bottom: 2rem; /* カード間のマージン */
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* 影を調整 */
-      border: 1px solid var(--border-color); /* 細い境界線 */
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border-color);
     }
     .card-header {
-      font-size: 1.6rem; /* 少し大きく */
+      font-size: 1.6rem;
       margin-bottom: 1.5rem;
       border-bottom: 1px solid var(--border-color);
       padding-bottom: 0.8rem;
@@ -80,8 +81,8 @@
     .form-group { margin-bottom: 1.2rem; }
     label {
       display: block;
-      margin-bottom: 0.5rem; /* ラベル下のマージン調整 */
-      font-weight: 600; /* ラベルを少し太く */
+      margin-bottom: 0.5rem;
+      font-weight: 600;
       font-size: 0.95rem;
       color: var(--text-muted-color);
     }
@@ -90,9 +91,9 @@
     input[type="text"],
     select {
       width: 100%;
-      padding: 0.8rem 1rem; /* パディング調整 */
+      padding: 0.8rem 1rem;
       border: 1px solid var(--border-color);
-      border-radius: 6px; /* 角丸調整 */
+      border-radius: 6px;
       background-color: var(--input-bg-color);
       color: var(--text-color);
       font-size: 1rem;
@@ -104,71 +105,65 @@
     select:focus {
         outline: none;
         border-color: var(--accent-color);
-        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.3); /* フォーカス時の影 */
+        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.3);
     }
-    /* Placeholder text color */
     input::placeholder { color: #777; }
 
     /* Radio/Checkbox Styling */
     .radio-group, .option-inline {
       margin: 0.8rem 0;
-      padding: 0.8rem 1rem; /* パディング調整 */
+      padding: 0.8rem 1rem;
       background-color: var(--input-bg-color);
       border-radius: 6px;
       border: 1px solid var(--border-color);
     }
     .radio-group label, .option-inline label {
-      margin-right: 1.5rem; /* オプション間のスペース */
+      margin-right: 1.5rem;
       cursor: pointer;
-      display: inline-flex; /* Flexboxで揃える */
+      display: inline-flex;
       align-items: center;
       margin-bottom: 0.5rem;
       font-weight: normal;
     }
     input[type="radio"], input[type="checkbox"] {
         margin-right: 0.5rem;
-        accent-color: var(--accent-color); /* ブラウザ標準のスタイルにアクセントカラー適用 */
+        accent-color: var(--accent-color);
         width: 1.1em;
         height: 1.1em;
         cursor: pointer;
     }
-    label.inline-checkbox { /* メッセージ有効化チェックボックス */
+    label.inline-checkbox {
         display: inline-flex; align-items: center;
         margin-bottom: 0; font-weight: normal; cursor: pointer;
-        margin-top: 0.8rem; /* 上にスペース */
+        margin-top: 0.8rem;
         padding: 0.5rem;
         border-radius: 4px;
         transition: background-color 0.2s ease;
     }
-    label.inline-checkbox:hover {
-        background-color: rgba(255, 255, 255, 0.05);
-    }
+    label.inline-checkbox:hover { background-color: rgba(255, 255, 255, 0.05); }
     label.inline-checkbox input[type="checkbox"] { width: auto; margin-right: 0.5rem; }
 
     /* --- Button Styles --- */
     .btn {
       border: none;
-      padding: 0.8rem 1.8rem; /* パディング調整 */
+      padding: 0.8rem 1.8rem;
       border-radius: 6px;
       cursor: pointer;
       font-size: 1rem;
-      font-weight: 600; /* 少し太く */
+      font-weight: 600;
       transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
       margin-top: 0.5rem;
-      display: inline-flex; /* アイコン用 */
+      display: inline-flex;
       align-items: center;
-      gap: 0.5rem; /* アイコンとテキストの間隔 */
+      gap: 0.5rem;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
     .btn:hover { box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); }
     .btn:active { transform: scale(0.97); box-shadow: none; }
-
     .btn#addAlarmBtn { background-color: var(--accent-color); color: #fff; }
     .btn#addAlarmBtn:hover { background-color: var(--accent-hover-color); }
-
     .btn-danger { background-color: var(--danger-color); color: #fff; }
     .btn-danger:hover { background-color: var(--danger-hover-color); }
-
     .btn-primary { background-color: var(--info-color); color: #fff; }
     .btn-primary:hover { background-color: var(--info-hover-color); }
 
@@ -180,7 +175,7 @@
       text-align: center;
       margin-bottom: 2rem;
       color: white;
-      font-size: 1.3rem; /* 少し大きく */
+      font-size: 1.3rem;
       font-weight: 600;
       box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
       border: 1px solid rgba(255, 255, 255, 0.1);
@@ -188,101 +183,97 @@
     .active-alarm p { margin-bottom: 1.2rem; }
 
     /* --- Table Styles --- */
-    .card-body table { margin-bottom: 0; } /* カード内のテーブル下マージン削除 */
+    .card-body table { margin-bottom: 0; }
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 2rem; /* テーブル下マージン */
+      margin-bottom: 2rem;
       background-color: var(--card-bg-color);
       table-layout: fixed;
-      border: 1px solid var(--border-color); /* テーブル外枠 */
-      border-radius: 8px; /* テーブル角丸 */
-      overflow: hidden; /* 角丸適用のため */
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      overflow: hidden;
     }
     th, td {
-      padding: 1rem; /* パディングを増やす */
+      padding: 1rem;
       text-align: left;
-      border-bottom: 1px solid var(--border-color); /* 水平線のみ */
-      border-left: none; border-right: none; border-top: none;
+      border-bottom: 1px solid var(--border-color);
       vertical-align: middle;
     }
     th {
       background-color: var(--header-bg-color);
-      font-weight: 600; /* ヘッダー太字 */
+      font-weight: 600;
       font-size: 0.9rem;
-      text-transform: uppercase; /* 大文字化 */
+      text-transform: uppercase;
       letter-spacing: 0.5px;
       color: var(--text-muted-color);
     }
-     /* 列幅調整 */
-    th:nth-child(1), td:nth-child(1) { width: 4%; text-align: center;}
+    /* 列幅調整 (必要に応じて変更) */
+    th:nth-child(1), td:nth-child(1) { width: 4%; text-align: center; }
     th:nth-child(2), td:nth-child(2) { width: 8%; }
     th:nth-child(3), td:nth-child(3) { width: 8%; }
     th:nth-child(4), td:nth-child(4) { width: 12%; }
     th:nth-child(5), td:nth-child(5) { width: 12%; }
     th:nth-child(6), td:nth-child(6) { width: 25%; }
-    th:nth-child(7), td:nth-child(7) { width: 18%; }
+    th:nth-child(7), td:nth-child(7) { width: 18%; text-align: center; }
     th:nth-child(8), td:nth-child(8) { width: 6%; text-align: center; }
-    th:nth-child(9), td:nth-child(9) { width: 7%; text-align: center; }
 
-    tr { border-bottom: 1px solid var(--border-color); } /* 行ごとの境界線 */
-    tr:last-child td { border-bottom: none; } /* 最後の行の下線は消す */
-    tr:nth-child(even) { background-color: rgba(0, 0, 0, 0.1); } /* 偶数行の背景色を薄く */
+    tr { border-bottom: 1px solid var(--border-color); }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) { background-color: rgba(0, 0, 0, 0.1); }
     tr:hover { background-color: var(--row-hover-color); }
-    tr.active {
-      background-color: rgba(229, 57, 53, 0.2) !important; /* 発動中の行の背景色を薄く */
-      color: var(--text-color);
-      font-weight: bold;
-      border-left: 3px solid var(--danger-color); /* 左に赤い線 */
-    }
-     tr.active td:first-child { padding-left: calc(1rem - 3px); } /* 左線の分パディング調整 */
-
+    tr.active { background-color: rgba(229, 57, 53, 0.2) !important; color: var(--text-color); font-weight: bold; border-left: 3px solid var(--danger-color); }
+    tr.active td:first-child { padding-left: calc(1rem - 3px); }
     td { font-size: 0.95rem; }
-    td.disabled-text { color: var(--text-muted-color); font-style: italic; } /* 無効時のテキスト */
-    td .btn-danger { padding: 0.4rem 0.8rem; font-size: 0.85rem; } /* 削除ボタン調整 */
-    td input[type="checkbox"] { /* 有効チェックボックス */
-        cursor: pointer; width: 1.3em; height: 1.3em;
-        vertical-align: middle;
-    }
+    td.disabled-text { color: var(--text-muted-color); font-style: italic; }
+    td .btn-danger { padding: 0.4rem 0.8rem; font-size: 0.85rem; }
+    td input[type="checkbox"] { cursor: pointer; width: 1.3em; height: 1.3em; vertical-align: middle; }
 
     /* --- Responsive Table Styles --- */
-    @media (max-width: 900px) { /* ブレークポイント調整 */
-        table, thead, tbody, th, td, tr { display: block; }
-        thead tr { position: absolute; top: -9999px; left: -9999px; }
-        tr {
-            border: 1px solid var(--border-color);
-            border-radius: 8px; /* レスポンシブ時も角丸 */
-            margin-bottom: 1rem;
-            background-color: var(--card-bg-color); /* カード背景と同じに */
-            padding: 0.5rem; /* 内側に少しパディング */
-        }
-         tr.active { border: 1px solid var(--danger-color); background-color: rgba(229, 57, 53, 0.1); }
-        td {
-            border: none; border-bottom: 1px dashed var(--border-color); /* 区切り線を点線に */
-            position: relative;
-            padding-left: 40%; /* ラベルスペース */
-            padding-top: 0.8rem; padding-bottom: 0.8rem; /* 上下パディング */
-            text-align: right; white-space: normal;
-            width: 100% !important; min-height: auto; /* 高さ自動 */
-            display: flex; align-items: center; justify-content: flex-end;
-        }
-        td:last-child { border-bottom: none; } /* 最後のセルの下線削除 */
-        td:before {
-            position: absolute; top: 0; left: 1rem; /* 左パディング調整 */
-            width: 35%; /* ラベル幅 */
-            padding-right: 10px; white-space: nowrap;
-            content: attr(data-label); font-weight: bold; text-align: left;
-            color: var(--text-muted-color); /* ラベル色調整 */
-            height: 100%; display: flex; align-items: center;
-            font-size: 0.85rem; /* ラベルのフォントサイズ */
-        }
-        /* 特定セルの調整 */
-        td[data-label="#"], td[data-label="有効"], td[data-label="操作"] {
-             justify-content: flex-end; /* 右寄せに戻す */
-             padding-left: 40%; /* パディングを戻す */
-        }
-         td[data-label="有効"] input, td[data-label="操作"] button { margin-left: 0; } /* 左マージン削除 */
-         td[data-label="#"]:before, td[data-label="有効"]:before, td[data-label="操作"]:before { width: 35%; }
+    @media (max-width: 900px) {
+      table, thead, tbody, th, td, tr { display: block; }
+      thead tr { position: absolute; top: -9999px; left: -9999px; }
+      tr {
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        background-color: var(--card-bg-color);
+        padding: 0.5rem;
+      }
+      td {
+        border: none;
+        border-bottom: 1px dashed var(--border-color);
+        position: relative;
+        padding-left: 40%;
+        padding-top: 0.8rem; padding-bottom: 0.8rem;
+        text-align: right;
+        white-space: normal;
+        width: 100% !important;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+      }
+      td:last-child { border-bottom: none; }
+      td:before {
+        position: absolute;
+        top: 0; left: 1rem;
+        width: 35%;
+        padding-right: 10px;
+        white-space: nowrap;
+        content: attr(data-label);
+        font-weight: bold;
+        text-align: left;
+        color: var(--text-muted-color);
+        display: flex;
+        align-items: center;
+        font-size: 0.85rem;
+      }
+      td[data-label="#"], td[data-label="有効"], td[data-label="操作"] {
+        justify-content: flex-end;
+        padding-left: 40%;
+      }
+      td[data-label="有効"] input, td[data-label="操作"] button { margin-left: 0; }
+      td[data-label="#"]:before, td[data-label="有効"]:before, td[data-label="操作"]:before { width: 35%; }
     }
     @media (max-width: 480px) {
       body { padding: 1rem 0.5rem; }
@@ -292,7 +283,7 @@
       .card-header { font-size: 1.3rem; }
       th, td { padding: 0.8rem; }
       td { padding-left: 35%; }
-      td:before { left: 0.8rem; width: 30%; font-size: 0.8rem;}
+      td:before { left: 0.8rem; width: 30%; font-size: 0.8rem; }
       .btn { padding: 0.7rem 1.2rem; font-size: 0.9rem; }
     }
   </style>
@@ -307,13 +298,16 @@
       <div id="currentTimeDisplay">--:--:--</div>
     </header>
 
+    <!-- アラーム追加フォーム -->
     <section id="alarmForm" class="card">
       <div class="card-header">アラーム追加</div>
       <div class="card-body">
+        <!-- 時刻入力 -->
         <div class="form-group">
           <label for="alarmTime">時刻入力</label>
           <input type="time" id="alarmTime" required>
         </div>
+        <!-- サウンド選択 -->
         <div class="form-group">
             <label for="alarmSound">アラーム音</label>
             <select id="alarmSound">
@@ -325,19 +319,22 @@
                 <option value="">サウンドなし</option>
             </select>
         </div>
+        <!-- メッセージ入力 -->
         <div class="form-group">
           <label for="alarmMessage">メッセージ内容</label>
           <input type="text" id="alarmMessage" placeholder="例: 会議の時間です">
-           <label class="inline-checkbox">
-               <input type="checkbox" id="enableMessage" checked> メッセージを読み上げる
-           </label>
+          <label class="inline-checkbox">
+               <input type="checkbox" id="enableMessage" checked> メッセージ読み上げ有効
+          </label>
         </div>
+        <!-- アラームタイプ選択 -->
         <div class="form-group radio-group">
           <label>アラームタイプ：</label>
           <label><input type="radio" name="alarmType" value="daily" checked> 毎日</label>
           <label><input type="radio" name="alarmType" value="weekly"> 曜日指定</label>
           <label><input type="radio" name="alarmType" value="once"> 一回限り</label>
         </div>
+        <!-- 曜日指定オプション -->
         <div class="form-group" id="weeklyOptions" style="display:none;">
           <label>曜日を選択</label>
           <div class="option-inline">
@@ -350,6 +347,7 @@
             <label><input type="checkbox" value="6"> 土</label>
           </div>
         </div>
+        <!-- 一回限りオプション -->
         <div class="form-group" id="onceOptions" style="display:none;">
           <label for="onceDate">日付選択</label>
           <input type="date" id="onceDate">
@@ -363,6 +361,7 @@
       </div>
     </section>
 
+    <!-- アラーム発動中表示 -->
     <section id="activeAlarmSection" class="active-alarm" style="display:none;">
       <p id="activeAlarmMessage">アラーム発動中！</p>
       <button class="btn btn-primary" onclick="stopAlarm()">
@@ -373,9 +372,11 @@
       </button>
     </section>
 
+    <!-- アラーム一覧表示 -->
     <section id="alarmList" class="card">
       <div class="card-header">設定済みアラーム一覧</div>
-      <div class="card-body" style="overflow-x: auto;"> <table id="alarmsTable">
+      <div class="card-body" style="overflow-x: auto;">
+        <table id="alarmsTable">
           <thead>
             <tr>
               <th>#</th>
@@ -403,7 +404,7 @@
     let alarmIdCounter = 0;
     let isAlarmRinging = false;
     const STORAGE_KEY = 'multiAlarmsWithOptions';
-    let clockIntervalId = null; // 現在時刻更新用インターバルID
+    let clockIntervalId = null; // 現在時刻更新用
 
     /*******************
      * グローバル変数 (Web Audio API用)
@@ -412,21 +413,18 @@
     let currentSound = { type: null, oscillator: null, gainNode: null, intervalId: null, timeoutIds: [] };
     let isAudioContextInitialized = false;
 
-    // --- DOM要素 ---
+    // --- DOM要素取得 ---
     const activeAlarmSection = document.getElementById("activeAlarmSection");
     const activeAlarmMessage = document.getElementById("activeAlarmMessage");
     const alarmsTableBody = document.getElementById("alarmsTable").getElementsByTagName("tbody")[0];
     const alarmSoundSelect = document.getElementById('alarmSound');
-    const alarmMessageInput = document.getElementById('alarmMessage');
-    const enableMessageCheckbox = document.getElementById('enableMessage');
-    const currentTimeDisplay = document.getElementById('currentTimeDisplay'); // 現在時刻表示用
+    const currentTimeDisplay = document.getElementById("currentTimeDisplay");
 
     // --- 定数 ---
     const SOUND_TYPE_MAP = {
         "alarm": "アラーム音", "siren": "サイレン", "telephone": "電話",
         "sos": "SOS", "music": "メロディ", "": "なし"
     };
-    const TABLE_LABELS = ["#", "時刻", "タイプ", "詳細", "サウンド", "メッセージ内容", "次回実行", "有効", "操作"];
 
     // --- デスクトップ通知 ---
     if ("Notification" in window && Notification.permission !== "granted") {
@@ -434,157 +432,513 @@
     }
 
     /**************************************************************************
-     * Web Audio API 関連の関数 (変更なし)
+     * Web Audio API 関連の関数
      **************************************************************************/
-    function initAudioContext() { if (isAudioContextInitialized) return true; if (!audioContext) { try { audioContext = new (window.AudioContext || window.webkitAudioContext)(); console.log("AudioContext created."); } catch (e) { console.error("Web Audio API is not supported", e); alert("Web Audio API非対応です"); return false; } } if (audioContext.state === 'suspended') { audioContext.resume().then(() => { console.log("AudioContext resumed."); isAudioContextInitialized = true; }).catch(err => console.error("Failed resume:", err)); } else { isAudioContextInitialized = true; } return isAudioContextInitialized; }
-    function stopAllSounds() { if (!audioContext || !currentSound.type) return; const now = audioContext.currentTime; console.log(`Stopping Web Audio: ${currentSound.type}`); if (currentSound.intervalId) clearInterval(currentSound.intervalId); currentSound.timeoutIds.forEach(id => clearTimeout(id)); if (currentSound.gainNode) { currentSound.gainNode.gain.cancelScheduledValues(now); try { const gain = currentSound.gainNode.gain.value; currentSound.gainNode.gain.setValueAtTime(gain, now); currentSound.gainNode.gain.linearRampToValueAtTime(0, now + 0.1); } catch(e) { console.warn("Gain error", e); currentSound.gainNode.gain.setValueAtTime(0, now); } } if (currentSound.oscillator) { const oscs = Array.isArray(currentSound.oscillator) ? currentSound.oscillator : [currentSound.oscillator]; oscs.forEach(osc => { try { osc.stop(now + 0.2); } catch (e) { if (e.name !== 'InvalidStateError') console.error("Osc stop error:", e); } }); } const gain = currentSound.gainNode; const osc = currentSound.oscillator; setTimeout(() => { if (gain) gain.disconnect(); if (osc) { const oscs = Array.isArray(osc) ? osc : [osc]; oscs.forEach(o => { try { o.disconnect(); } catch(e) {} }); } console.log("Nodes disconnected."); }, 300); currentSound = { type: null, oscillator: null, gainNode: null, intervalId: null, timeoutIds: [] }; }
-    function playSound(soundType) { if (!soundType) { console.log("No sound selected"); return; } if (!isAudioContextInitialized) { console.warn("AudioContext not init"); return; } if (currentSound.type) stopAllSounds(); console.log(`Starting Web Audio: ${soundType}`); currentSound.type = soundType; const now = audioContext.currentTime; currentSound.gainNode = audioContext.createGain(); currentSound.gainNode.gain.setValueAtTime(0.4, now); currentSound.gainNode.connect(audioContext.destination); switch (soundType) { case 'alarm': createAlarmSound(now); break; case 'siren': createSirenSound(now); break; case 'telephone': createTelephoneSound(now); break; case 'sos': createSOSSound(now); break; case 'music': createMusicSound(now); break; default: console.error("Unknown sound:", soundType); currentSound.type = null; } }
-    function createAlarmSound(startTime) { const osc = audioContext.createOscillator(); osc.type = 'square'; osc.frequency.setValueAtTime(880, startTime); osc.connect(currentSound.gainNode); osc.start(startTime); currentSound.oscillator = osc; const pD = 0.1, sD = 0.1, iT = pD + sD; function pulse() { if (currentSound.type !== 'alarm' || !isAlarmRinging) { if(currentSound.intervalId) clearInterval(currentSound.intervalId); stopAllSounds(); return; } const now = audioContext.currentTime; if (!currentSound.gainNode) { if(currentSound.intervalId) clearInterval(currentSound.intervalId); return; } try { currentSound.gainNode.gain.cancelScheduledValues(now); currentSound.gainNode.gain.setValueAtTime(0.4, now); currentSound.gainNode.gain.setValueAtTime(0, now + pD); } catch(e) { console.error("Pulse error:", e); if(currentSound.intervalId) clearInterval(currentSound.intervalId); stopAllSounds(); } } pulse(); currentSound.intervalId = setInterval(pulse, iT * 1000); }
-    function createSirenSound(startTime) { const osc = audioContext.createOscillator(); osc.type = 'sawtooth'; osc.connect(currentSound.gainNode); osc.start(startTime); currentSound.oscillator = osc; const f1 = 660, f2 = 880, dur = 0.5; function freqChange() { if (currentSound.type !== 'siren' || !isAlarmRinging) { if(currentSound.intervalId) clearInterval(currentSound.intervalId); stopAllSounds(); return; } const now = audioContext.currentTime; if (!currentSound.oscillator) { if(currentSound.intervalId) clearInterval(currentSound.intervalId); return; } try { osc.frequency.cancelScheduledValues(now); osc.frequency.setValueAtTime(f1, now); osc.frequency.linearRampToValueAtTime(f2, now + dur); osc.frequency.setValueAtTime(f2, now + dur); osc.frequency.linearRampToValueAtTime(f1, now + dur * 2); } catch(e) { console.error("Siren freq error:", e); if(currentSound.intervalId) clearInterval(currentSound.intervalId); stopAllSounds(); } } freqChange(); currentSound.intervalId = setInterval(freqChange, dur * 2 * 1000); }
-    function createTelephoneSound(startTime) { const o1 = audioContext.createOscillator(), o2 = audioContext.createOscillator(); o1.type = 'sine'; o2.type = 'sine'; o1.frequency.setValueAtTime(440, startTime); o2.frequency.setValueAtTime(480, startTime); o1.connect(currentSound.gainNode); o2.connect(currentSound.gainNode); o1.start(startTime); o2.start(startTime); currentSound.oscillator = [o1, o2]; const rD = 1.0, sD = 2.0, iT = rD + sD; function ring() { if (currentSound.type !== 'telephone' || !isAlarmRinging) { if(currentSound.intervalId) clearInterval(currentSound.intervalId); stopAllSounds(); return; } const now = audioContext.currentTime; if (!currentSound.gainNode) { if(currentSound.intervalId) clearInterval(currentSound.intervalId); return; } try { currentSound.gainNode.gain.cancelScheduledValues(now); currentSound.gainNode.gain.setValueAtTime(0.4, now); currentSound.gainNode.gain.setValueAtTime(0, now + rD); } catch(e) { console.error("Tel ring error:", e); if(currentSound.intervalId) clearInterval(currentSound.intervalId); stopAllSounds(); } } ring(); currentSound.intervalId = setInterval(ring, iT * 1000); }
-    function createSOSSound(startTime) { const osc = audioContext.createOscillator(); osc.type = 'sine'; osc.frequency.setValueAtTime(600, startTime); osc.connect(currentSound.gainNode); osc.start(startTime); currentSound.oscillator = osc; const dot = 0.15, dash = dot * 3, intra = dot, inter = dot * 3, word = dot * 7; let time = startTime; currentSound.gainNode.gain.setValueAtTime(0, time); function beep(dur, del) { if (currentSound.type !== 'sos' || !isAlarmRinging) return false; if (!currentSound.gainNode) return false; const start = time + del, end = start + dur; try { currentSound.gainNode.gain.setValueAtTime(0.4, start); currentSound.gainNode.gain.setValueAtTime(0, end); } catch(e) { console.error("SOS beep error:", e); stopAllSounds(); return false; } time = end; return true; } let ok = true; if (ok) ok = beep(dot, 0); if (ok) ok = beep(dot, intra); if (ok) ok = beep(dot, intra); if (ok) ok = beep(dash, inter); if (ok) ok = beep(dash, intra); if (ok) ok = beep(dash, intra); if (ok) ok = beep(dot, inter); if (ok) ok = beep(dot, intra); if (ok) ok = beep(dot, intra); if (!ok) return; const loopDelay = time - startTime + word; const timeoutId = setTimeout(() => { if (currentSound.type === 'sos' && isAlarmRinging) createSOSSound(audioContext.currentTime); }, loopDelay * 1000); currentSound.timeoutIds.push(timeoutId); }
-    function createMusicSound(startTime) { const osc = audioContext.createOscillator(); osc.type = 'triangle'; osc.connect(currentSound.gainNode); osc.start(startTime); currentSound.oscillator = osc; const tempo = 120, qN = 60 / tempo; const notes = [ { f: 261.63, d: qN }, { f: 261.63, d: qN }, { f: 392.00, d: qN }, { f: 392.00, d: qN }, { f: 440.00, d: qN }, { f: 440.00, d: qN }, { f: 392.00, d: qN * 2 }, ]; let time = startTime; currentSound.gainNode.gain.setValueAtTime(0, time); let ok = true; notes.forEach(n => { if (currentSound.type !== 'music' || !isAlarmRinging || !ok) { ok = false; return; } if (!currentSound.gainNode || !currentSound.oscillator) { ok = false; return; } try { osc.frequency.setValueAtTime(n.f, time); currentSound.gainNode.gain.setValueAtTime(0.3, time); time += n.d; currentSound.gainNode.gain.setValueAtTime(0, time - 0.01); } catch(e) { console.error("Music note error:", e); stopAllSounds(); ok = false; } }); if (!ok) return; const loopDelay = time - startTime + qN; const timeoutId = setTimeout(() => { if (currentSound.type === 'music' && isAlarmRinging) createMusicSound(audioContext.currentTime); }, loopDelay * 1000); currentSound.timeoutIds.push(timeoutId); }
+    function initAudioContext() {
+      if (isAudioContextInitialized) return true;
+      if (!audioContext) {
+        try {
+          audioContext = new (window.AudioContext || window.webkitAudioContext)();
+          console.log("AudioContext created.");
+        } catch (e) {
+          console.error("Web Audio API is not supported", e);
+          alert("Web Audio APIがサポートされていません。");
+          return false;
+        }
+      }
+      if (audioContext.state === 'suspended') {
+        audioContext.resume().then(() => {
+          console.log("AudioContext resumed.");
+          isAudioContextInitialized = true;
+        }).catch(err => console.error("Failed resume:", err));
+      } else {
+        isAudioContextInitialized = true;
+      }
+      return isAudioContextInitialized;
+    }
+    function stopAllSounds() {
+      if (!audioContext || !currentSound.type) return;
+      const now = audioContext.currentTime;
+      if (currentSound.intervalId) clearInterval(currentSound.intervalId);
+      currentSound.timeoutIds.forEach(id => clearTimeout(id));
+      if (currentSound.gainNode) {
+        currentSound.gainNode.gain.cancelScheduledValues(now);
+        try {
+          currentSound.gainNode.gain.setValueAtTime(0, now);
+        } catch(e) { console.warn("Gain error", e); }
+      }
+      if (currentSound.oscillator) {
+        const oscs = Array.isArray(currentSound.oscillator) ? currentSound.oscillator : [currentSound.oscillator];
+        oscs.forEach(osc => {
+          try { osc.stop(now + 0.2); } catch (e) { if (e.name !== 'InvalidStateError') console.error("Osc stop error:", e); }
+        });
+      }
+      setTimeout(() => {
+        if (currentSound.gainNode) currentSound.gainNode.disconnect();
+        if (currentSound.oscillator) {
+          const oscs = Array.isArray(currentSound.oscillator) ? currentSound.oscillator : [currentSound.oscillator];
+          oscs.forEach(o => { try { o.disconnect(); } catch(e) {} });
+        }
+        console.log("Nodes disconnected.");
+      }, 300);
+      currentSound = { type: null, oscillator: null, gainNode: null, intervalId: null, timeoutIds: [] };
+    }
+    function playSound(soundType) {
+      if (!soundType) return;
+      if (!isAudioContextInitialized) {
+        console.warn("AudioContext not initialized");
+        return;
+      }
+      if (currentSound.type) stopAllSounds();
+      currentSound.type = soundType;
+      const now = audioContext.currentTime;
+      currentSound.gainNode = audioContext.createGain();
+      currentSound.gainNode.gain.setValueAtTime(0.4, now);
+      currentSound.gainNode.connect(audioContext.destination);
+      switch (soundType) {
+        case 'alarm': createAlarmSound(now); break;
+        case 'siren': createSirenSound(now); break;
+        case 'telephone': createTelephoneSound(now); break;
+        case 'sos': createSOSSound(now); break;
+        case 'music': createMusicSound(now); break;
+        default: console.error("Unknown sound:", soundType); currentSound.type = null;
+      }
+    }
+    function createAlarmSound(startTime) {
+      const osc = audioContext.createOscillator();
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(880, startTime);
+      osc.connect(currentSound.gainNode);
+      osc.start(startTime);
+      currentSound.oscillator = osc;
+      const pulseDuration = 0.1, silenceDuration = 0.1, intervalTime = pulseDuration + silenceDuration;
+      function pulse() {
+        if (currentSound.type !== 'alarm' || !isAlarmRinging) { if(currentSound.intervalId) clearInterval(currentSound.intervalId); stopAllSounds(); return; }
+        const now = audioContext.currentTime;
+        try {
+          currentSound.gainNode.gain.cancelScheduledValues(now);
+          currentSound.gainNode.gain.setValueAtTime(0.4, now);
+          currentSound.gainNode.gain.setValueAtTime(0, now + pulseDuration);
+        } catch(e) { console.error("Pulse error:", e); if(currentSound.intervalId) clearInterval(currentSound.intervalId); stopAllSounds(); }
+      }
+      pulse();
+      currentSound.intervalId = setInterval(pulse, intervalTime * 1000);
+    }
+    function createSirenSound(startTime) {
+      const osc = audioContext.createOscillator();
+      osc.type = 'sawtooth';
+      osc.connect(currentSound.gainNode);
+      osc.start(startTime);
+      currentSound.oscillator = osc;
+      const f1 = 660, f2 = 880, duration = 0.5;
+      function freqChange() {
+        if (currentSound.type !== 'siren' || !isAlarmRinging) { if(currentSound.intervalId) clearInterval(currentSound.intervalId); stopAllSounds(); return; }
+        const now = audioContext.currentTime;
+        try {
+          osc.frequency.cancelScheduledValues(now);
+          osc.frequency.setValueAtTime(f1, now);
+          osc.frequency.linearRampToValueAtTime(f2, now + duration);
+          osc.frequency.setValueAtTime(f2, now + duration);
+          osc.frequency.linearRampToValueAtTime(f1, now + duration * 2);
+        } catch(e) { console.error("Siren error:", e); if(currentSound.intervalId) clearInterval(currentSound.intervalId); stopAllSounds(); }
+      }
+      freqChange();
+      currentSound.intervalId = setInterval(freqChange, duration * 2 * 1000);
+    }
+    function createTelephoneSound(startTime) {
+      const o1 = audioContext.createOscillator(), o2 = audioContext.createOscillator();
+      o1.type = 'sine'; o2.type = 'sine';
+      o1.frequency.setValueAtTime(440, startTime); o2.frequency.setValueAtTime(480, startTime);
+      o1.connect(currentSound.gainNode); o2.connect(currentSound.gainNode);
+      o1.start(startTime); o2.start(startTime);
+      currentSound.oscillator = [o1, o2];
+      const ringDuration = 1.0, silenceDuration = 2.0, intervalTime = ringDuration + silenceDuration;
+      function ring() {
+        if (currentSound.type !== 'telephone' || !isAlarmRinging) { if(currentSound.intervalId) clearInterval(currentSound.intervalId); stopAllSounds(); return; }
+        const now = audioContext.currentTime;
+        try {
+          currentSound.gainNode.gain.cancelScheduledValues(now);
+          currentSound.gainNode.gain.setValueAtTime(0.4, now);
+          currentSound.gainNode.gain.setValueAtTime(0, now + ringDuration);
+        } catch(e) { console.error("Telephone ring error:", e); if(currentSound.intervalId) clearInterval(currentSound.intervalId); stopAllSounds(); }
+      }
+      ring();
+      currentSound.intervalId = setInterval(ring, intervalTime * 1000);
+    }
+    function createSOSSound(startTime) {
+      const osc = audioContext.createOscillator();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(600, startTime);
+      osc.connect(currentSound.gainNode);
+      osc.start(startTime);
+      currentSound.oscillator = osc;
+      const dot = 0.15, dash = dot * 3, intra = dot, inter = dot * 3, word = dot * 7;
+      let time = startTime;
+      currentSound.gainNode.gain.setValueAtTime(0, time);
+      function beep(dur, delay) {
+        if (currentSound.type !== 'sos' || !isAlarmRinging) return false;
+        const start = time + delay, end = start + dur;
+        try {
+          currentSound.gainNode.gain.setValueAtTime(0.4, start);
+          currentSound.gainNode.gain.setValueAtTime(0, end);
+        } catch(e) { console.error("SOS beep error:", e); stopAllSounds(); return false; }
+        time = end;
+        return true;
+      }
+      let ok = beep(dot, 0);
+      ok = ok && beep(dot, intra);
+      ok = ok && beep(dot, intra);
+      ok = ok && beep(dash, inter);
+      ok = ok && beep(dash, intra);
+      ok = ok && beep(dash, intra);
+      ok = ok && beep(dot, inter);
+      ok = ok && beep(dot, intra);
+      ok = ok && beep(dot, intra);
+      if (!ok) return;
+      const loopDelay = time - startTime + word;
+      const timeoutId = setTimeout(() => {
+        if (currentSound.type === 'sos' && isAlarmRinging) createSOSSound(audioContext.currentTime);
+      }, loopDelay * 1000);
+      currentSound.timeoutIds.push(timeoutId);
+    }
+    function createMusicSound(startTime) {
+      const osc = audioContext.createOscillator();
+      osc.type = 'triangle';
+      osc.connect(currentSound.gainNode);
+      osc.start(startTime);
+      currentSound.oscillator = osc;
+      const tempo = 120, qN = 60 / tempo;
+      const notes = [
+          { f: 261.63, d: qN }, { f: 261.63, d: qN },
+          { f: 392.00, d: qN }, { f: 392.00, d: qN },
+          { f: 440.00, d: qN }, { f: 440.00, d: qN },
+          { f: 392.00, d: qN * 2 }
+      ];
+      let time = startTime;
+      currentSound.gainNode.gain.setValueAtTime(0, time);
+      let ok = true;
+      notes.forEach(n => {
+          if (currentSound.type !== 'music' || !isAlarmRinging || !ok) { ok = false; return; }
+          try {
+            osc.frequency.setValueAtTime(n.f, time);
+            currentSound.gainNode.gain.setValueAtTime(0.3, time);
+            time += n.d;
+            currentSound.gainNode.gain.setValueAtTime(0, time - 0.01);
+          } catch(e) { console.error("Music note error:", e); stopAllSounds(); ok = false; }
+      });
+      if (!ok) return;
+      const loopDelay = time - startTime + qN;
+      const timeoutId = setTimeout(() => {
+          if (currentSound.type === 'music' && isAlarmRinging) createMusicSound(audioContext.currentTime);
+      }, loopDelay * 1000);
+      currentSound.timeoutIds.push(timeoutId);
+    }
 
     /**************************************************************************
      * アラームアプリ本体の関数
+     *
+     * ※ 重複してプレースホルダー関数があったため、それらは削除しました。
      **************************************************************************/
 
-    function loadAlarms() { /* (変更なし) */ }
-    function saveAlarms() { /* (変更なし) */ }
-    document.querySelectorAll('input[name="alarmType"]').forEach(radio => { /* (変更なし) */ });
-    function addAlarm() { /* (変更なし) */ }
-    function convertDaysToJapanese(days) { /* (変更なし) */ }
-    function computeNextAlarmTime(alarm) { /* (変更なし) */ }
-    function scheduleAlarm(alarm) { /* (変更なし) */ }
+    // アラーム追加処理
+    function addAlarm() {
+      const timeInput = document.getElementById('alarmTime').value;
+      const messageInput = document.getElementById('alarmMessage').value.trim();
+      if (!timeInput) {
+        alert("時刻を入力してください。");
+        return;
+      }
+      if (!messageInput) {
+        alert("メッセージを入力してください。");
+        return;
+      }
+      const alarmType = document.querySelector('input[name="alarmType"]:checked').value;
+      let alarm = {
+        id: alarmIdCounter,
+        mode: alarmType,
+        time: timeInput,
+        days: [],
+        date: null,
+        message: messageInput,
+        enabled: true,
+        active: false,
+        soundType: document.getElementById('alarmSound').value,
+        messageEnabled: document.getElementById('enableMessage').checked
+      };
+      if (alarmType === 'weekly') {
+        const checkedDays = Array.from(document.querySelectorAll('#weeklyOptions input[type="checkbox"]:checked'))
+                              .map(cb => parseInt(cb.value, 10));
+        if (checkedDays.length === 0) {
+          alert("曜日指定の場合、少なくとも1つの曜日を選択してください。");
+          return;
+        }
+        alarm.days = checkedDays;
+      } else if (alarmType === 'once') {
+        const onceDate = document.getElementById('onceDate').value;
+        if (!onceDate) {
+          alert("一回限りの場合、日付を選択してください。");
+          return;
+        }
+        alarm.date = onceDate;
+      }
+      alarms.push(alarm);
+      alarmIdCounter++;
+      if (alarm.enabled) { scheduleAlarm(alarm); }
+      updateAlarmsTable();
+      saveAlarms();
+      alert("アラームを追加しました。");
+    }
 
+    // 曜日数値を日本語に変換
+    function convertDaysToJapanese(days) {
+      const dayNames = ["日", "月", "火", "水", "木", "金", "土"];
+      return days.map(d => dayNames[d]).join("、");
+    }
+
+    // 次回実行時刻を計算する関数
+    function computeNextAlarmTime(alarm) {
+      const now = new Date();
+      const [hour, minute] = alarm.time.split(":").map(Number);
+      let nextTime = null;
+      if (alarm.mode === 'daily') {
+        nextTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, minute, 0);
+        if (nextTime <= now) nextTime.setDate(nextTime.getDate() + 1);
+      } else if (alarm.mode === 'weekly') {
+        let daysAhead = null;
+        for (let i = 0; i < 7; i++) {
+          let potential = new Date(now);
+          potential.setDate(now.getDate() + i);
+          if (alarm.days.includes(potential.getDay())) {
+            if (i === 0) {
+              let currentMinutes = now.getHours() * 60 + now.getMinutes();
+              let alarmMinutes = hour * 60 + minute;
+              if (alarmMinutes > currentMinutes) { daysAhead = i; break; }
+            } else { daysAhead = i; break; }
+          }
+        }
+        if (daysAhead === null) daysAhead = 7;
+        nextTime = new Date(now);
+        nextTime.setDate(now.getDate() + daysAhead);
+        nextTime.setHours(hour, minute, 0, 0);
+      } else if (alarm.mode === 'once') {
+        const [year, month, day] = alarm.date.split("-").map(Number);
+        nextTime = new Date(year, month - 1, day, hour, minute, 0);
+        if (nextTime <= now) return null;
+      }
+      return nextTime;
+    }
+
+    // アラームのスケジューリング
+    function scheduleAlarm(alarm) {
+      if (!alarm.enabled) return;
+      const nextTime = computeNextAlarmTime(alarm);
+      if (!nextTime) return;
+      alarm.nextTime = nextTime;
+      const now = new Date();
+      const timeout = nextTime.getTime() - now.getTime();
+      alarm.timerId = setTimeout(() => {
+        triggerAlarm(alarm.id);
+        if (alarm.mode === 'daily' || alarm.mode === 'weekly') {
+          scheduleAlarm(alarm);
+          saveAlarms();
+          updateAlarmsTable();
+        } else if (alarm.mode === 'once') {
+          removeAlarm(alarm.id);
+          saveAlarms();
+          updateAlarmsTable();
+        }
+      }, timeout);
+    }
+
+    // アラーム一覧を更新（テーブルに表示）
     function updateAlarmsTable() {
       alarmsTableBody.innerHTML = "";
       const sortedAlarms = alarms.slice().sort((a, b) => {
-          const aEnabled = a.enabled; const bEnabled = b.enabled;
-          const aTime = aEnabled && a.nextTime ? new Date(a.nextTime).getTime() : Infinity;
-          const bTime = bEnabled && b.nextTime ? new Date(b.nextTime).getTime() : Infinity;
-          if (aTime === Infinity && bTime === Infinity) return 0;
-          if (aTime === Infinity) return 1; if (bTime === Infinity) return -1;
-          return aTime - bTime;
+        const aTime = a.enabled && a.nextTime ? new Date(a.nextTime).getTime() : Infinity;
+        const bTime = b.enabled && b.nextTime ? new Date(b.nextTime).getTime() : Infinity;
+        return aTime - bTime;
       });
-
       if (sortedAlarms.length === 0) {
-          // アラームがない場合の表示
-          const row = alarmsTableBody.insertRow();
-          const cell = row.insertCell();
-          cell.colSpan = TABLE_LABELS.length; // 全カラムを結合
-          cell.textContent = "設定されているアラームはありません。";
-          cell.style.textAlign = "center";
-          cell.style.padding = "2rem";
-          cell.style.color = "var(--text-muted-color)";
+        const row = alarmsTableBody.insertRow();
+        const cell = row.insertCell();
+        cell.colSpan = 9;
+        cell.textContent = "設定されているアラームはありません。";
+        cell.style.textAlign = "center";
+        cell.style.padding = "2rem";
+        cell.style.color = "var(--text-muted-color)";
       } else {
-          sortedAlarms.forEach((alarm, index) => {
-            const row = alarmsTableBody.insertRow();
-            row.className = alarm.active ? "active" : "";
-            if (!alarm.enabled) { row.style.opacity = "0.6"; row.style.fontStyle = "italic"; }
+        sortedAlarms.forEach((alarm, index) => {
+          const row = alarmsTableBody.insertRow();
+          row.className = alarm.active ? "active" : "";
+          if (!alarm.enabled) {
+            row.style.opacity = "0.6";
+            row.style.fontStyle = "italic";
+          }
+          // 各セルの追加
+          let cell = row.insertCell();
+          cell.innerText = index + 1;
+          cell.setAttribute('data-label', "#");
 
-            function addCell(content, label) {
-                const cell = row.insertCell();
-                const escapedContent = typeof content === 'string' ? content.replace(/</g, "&lt;").replace(/>/g, "&gt;") : content;
-                cell.innerHTML = escapedContent;
-                cell.setAttribute('data-label', label);
-                return cell;
-            }
+          cell = row.insertCell();
+          cell.innerText = alarm.time;
+          cell.setAttribute('data-label', "時刻");
 
-            addCell(index + 1, TABLE_LABELS[0]); // #
-            addCell(alarm.time, TABLE_LABELS[1]); // 時刻
-            let typeText = "";
-            if (alarm.mode === "daily") typeText = "毎日";
-            else if (alarm.mode === "weekly") typeText = "曜日指定";
-            else if (alarm.mode === "once") typeText = "一回限り";
-            addCell(typeText, TABLE_LABELS[2]); // タイプ
-            let detail = "-";
-            if (alarm.mode === "weekly") detail = convertDaysToJapanese(alarm.days);
-            else if (alarm.mode === "once") detail = alarm.date;
-            addCell(detail, TABLE_LABELS[3]); // 詳細
-            const soundDisplay = SOUND_TYPE_MAP[alarm.soundType] || '不明';
-            addCell(soundDisplay, TABLE_LABELS[4]); // サウンド
-            const messageCell = addCell(alarm.message || "", TABLE_LABELS[5]); // メッセージ内容
-            if (!alarm.messageEnabled && alarm.message) { // メッセージはあるが読み上げない場合
-                 messageCell.classList.add('disabled-text');
-            } else if (!alarm.message) { // メッセージ自体がない場合
-                 messageCell.innerHTML = `<span style="color: var(--text-muted-color);">-</span>`; // ハイフン表示
-            }
+          let typeText = "";
+          if (alarm.mode === "daily") typeText = "毎日";
+          else if (alarm.mode === "weekly") typeText = "曜日指定";
+          else if (alarm.mode === "once") typeText = "一回限り";
+          cell = row.insertCell();
+          cell.innerText = typeText;
+          cell.setAttribute('data-label', "タイプ");
 
-            const nextTimeText = (alarm.enabled && alarm.nextTime) ? alarm.nextTime.toLocaleString('ja-JP', { dateStyle: 'short', timeStyle: 'short'}) : "無効"; // 日付フォーマット変更
-            const nextTimeCell = addCell(nextTimeText, TABLE_LABELS[6]); // 次回実行
-             if (!alarm.enabled) nextTimeCell.classList.add('disabled-text');
+          let detail = "-";
+          if (alarm.mode === "weekly") detail = convertDaysToJapanese(alarm.days);
+          else if (alarm.mode === "once") detail = alarm.date;
+          cell = row.insertCell();
+          cell.innerText = detail;
+          cell.setAttribute('data-label', "詳細");
 
-            const enableCell = addCell(`<input type="checkbox" title="アラームの有効/無効を切り替え" id="toggle_${alarm.id}" onchange="toggleAlarmState(${alarm.id})" ${alarm.enabled ? "checked" : ""}>`, TABLE_LABELS[7]); // 有効
-            enableCell.style.textAlign = 'center';
+          const soundDisplay = SOUND_TYPE_MAP[alarm.soundType] || '不明';
+          cell = row.insertCell();
+          cell.innerText = soundDisplay;
+          cell.setAttribute('data-label', "サウンド");
 
-            // 削除ボタンにアイコン追加 (SVG例)
-            const actionCell = addCell(`<button class="btn btn-danger" title="アラームを削除" onclick="removeAlarm(${alarm.id})">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                  <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
-                </svg>
-            </button>`, TABLE_LABELS[8]); // 操作
-            actionCell.style.textAlign = 'center';
-          });
+          cell = row.insertCell();
+          cell.innerText = alarm.message;
+          cell.setAttribute('data-label', "メッセージ内容");
+
+          const nextTimeText = (alarm.enabled && alarm.nextTime) ? alarm.nextTime.toLocaleString('ja-JP', { dateStyle: 'short', timeStyle: 'short'}) : "無効";
+          cell = row.insertCell();
+          cell.innerText = nextTimeText;
+          cell.setAttribute('data-label', "次回実行");
+
+          cell = row.insertCell();
+          cell.innerHTML = `<input type="checkbox" title="有効／無効切替" id="toggle_${alarm.id}" onchange="toggleAlarmState(${alarm.id})" ${alarm.enabled ? "checked" : ""}>`;
+          cell.setAttribute('data-label', "有効");
+          cell.style.textAlign = 'center';
+
+          cell = row.insertCell();
+          cell.innerHTML = `<button class="btn btn-danger" title="削除" onclick="removeAlarm(${alarm.id})">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                              </svg>
+                           </button>`;
+          cell.setAttribute('data-label', "操作");
+          cell.style.textAlign = 'center';
+        });
       }
     }
 
-    function toggleAlarmState(id) { initAudioContext(); const alarm = alarms.find(a => a.id === id); if (!alarm) return; const checkbox = document.getElementById("toggle_" + id); alarm.enabled = checkbox.checked; if (alarm.enabled) { scheduleAlarm(alarm); } else { if (alarm.timerId) { clearTimeout(alarm.timerId); alarm.timerId = null; } alarm.nextTime = null; } saveAlarms(); updateAlarmsTable(); }
+    // 有効／無効の切替処理
+    function toggleAlarmState(id) {
+      initAudioContext();
+      const alarm = alarms.find(a => a.id === id);
+      if (!alarm) return;
+      const checkbox = document.getElementById("toggle_" + id);
+      alarm.enabled = checkbox.checked;
+      if (alarm.enabled) scheduleAlarm(alarm);
+      else {
+        if (alarm.timerId) { clearTimeout(alarm.timerId); alarm.timerId = null; }
+        alarm.nextTime = null;
+      }
+      saveAlarms();
+      updateAlarmsTable();
+    }
+
+    // アラーム削除処理
     function removeAlarm(id) {
-        // 確認ダイアログを追加 (任意)
-        const alarmToRemove = alarms.find(a => a.id === id);
-        if (alarmToRemove && confirm(`時刻 ${alarmToRemove.time} のアラーム「${alarmToRemove.message || '(メッセージなし)'}」を削除しますか？`)) {
-            const idx = alarms.findIndex(a => a.id === id);
-            if (idx !== -1) {
-                if (alarms[idx].timerId) clearTimeout(alarms[idx].timerId);
-                alarms.splice(idx, 1);
-                updateAlarmsTable();
-                saveAlarms();
-            }
+      const alarmToRemove = alarms.find(a => a.id === id);
+      if (alarmToRemove && confirm(`時刻 ${alarmToRemove.time} のアラーム「${alarmToRemove.message || '(メッセージなし)'}」を削除しますか？`)) {
+        const idx = alarms.findIndex(a => a.id === id);
+        if (idx !== -1) {
+          if (alarms[idx].timerId) clearTimeout(alarms[idx].timerId);
+          alarms.splice(idx, 1);
+          updateAlarmsTable();
+          saveAlarms();
         }
-     }
-    function repeatSpeakAlarm(message) { if (!isAlarmRinging || !('speechSynthesis' in window)) return; speechSynthesis.cancel(); let u = new SpeechSynthesisUtterance(message); u.lang = "ja-JP"; u.rate = 1.0; u.pitch = 1.0; u.onend = function() { if (isAlarmRinging) { setTimeout(() => { if (isAlarmRinging) speechSynthesis.speak(u); }, 500); } }; u.onerror = function(e) { console.error('SpeechSynthesis Error:', e.error); isAlarmRinging = false; stopAlarm(); }; speechSynthesis.speak(u); }
-    function triggerAlarm(id) { const alarm = alarms.find(a => a.id === id); if (!alarm || !alarm.enabled) return; console.log(`Alarm ${id} triggered: Sound=${alarm.soundType}, Msg=${alarm.messageEnabled ? alarm.message : 'Disabled'}`); isAlarmRinging = true; alarm.active = true; activeAlarmMessage.textContent = alarm.message || "(メッセージなし)"; activeAlarmSection.style.display = "block"; if ("Notification" in window && Notification.permission === "granted") { new Notification("アラーム発動！", { body: alarm.message || "設定時刻です", tag: `alarm-${id}` }); } if (alarm.soundType) playSound(alarm.soundType); if (alarm.messageEnabled && alarm.message) repeatSpeakAlarm(alarm.message); updateAlarmsTable(); }
-    function stopAlarm() { if (isAlarmRinging) { console.log("Stopping alarm."); isAlarmRinging = false; stopAllSounds(); if ('speechSynthesis' in window) speechSynthesis.cancel(); activeAlarmSection.style.display = "none"; alarms.forEach(a => { if (a.active) a.active = false; }); updateAlarmsTable(); } }
+      }
+    }
 
-    /*******************
-     * 現在時刻表示 更新関数
-     *******************/
-     function updateClock() {
-         if (currentTimeDisplay) {
-             const now = new Date();
-             // toLocaleTimeString を使うとロケール依存のフォーマットになる
-             // currentTimeDisplay.textContent = now.toLocaleTimeString('ja-JP');
-             // または、HH:MM:SS 形式に整形
-             const hours = String(now.getHours()).padStart(2, '0');
-             const minutes = String(now.getMinutes()).padStart(2, '0');
-             const seconds = String(now.getSeconds()).padStart(2, '0');
-             currentTimeDisplay.textContent = `${hours}:${minutes}:${seconds}`;
-         }
-     }
+    // SpeechSynthesisを使った読み上げの繰り返し
+    function repeatSpeakAlarm(message) {
+      if (!isAlarmRinging || !('speechSynthesis' in window)) return;
+      speechSynthesis.cancel();
+      let utterance = new SpeechSynthesisUtterance(message);
+      utterance.lang = "ja-JP";
+      utterance.rate = 1.0; utterance.pitch = 1.0;
+      utterance.onend = function() {
+        if (isAlarmRinging) { setTimeout(() => { if (isAlarmRinging) speechSynthesis.speak(utterance); }, 500); }
+      };
+      utterance.onerror = function(e) { console.error('SpeechSynthesis Error:', e.error); isAlarmRinging = false; stopAlarm(); };
+      speechSynthesis.speak(utterance);
+    }
 
-    /*******************
-     * 初期化処理
-     *******************/
-    function initializeAudioOnFirstInteraction() { if (!isAudioContextInitialized) { const success = initAudioContext(); if (success) { console.log("AudioContext initialized on user interaction."); document.body.removeEventListener('click', initializeAudioOnFirstInteraction, true); document.body.removeEventListener('touchstart', initializeAudioOnFirstInteraction, true); } } else { document.body.removeEventListener('click', initializeAudioOnFirstInteraction, true); document.body.removeEventListener('touchstart', initializeAudioOnFirstInteraction, true); } }
+    // アラーム発動処理（通知＋音声合成＋サウンド再生）
+    function triggerAlarm(id) {
+      const alarm = alarms.find(a => a.id === id);
+      if (!alarm || !alarm.enabled) return;
+      if (!isAlarmRinging) {
+        isAlarmRinging = true;
+        activeAlarmSection.style.display = "block";
+        activeAlarmMessage.textContent = alarm.message || "(メッセージなし)";
+        if ("Notification" in window && Notification.permission === "granted") {
+          new Notification("アラーム発動！", { body: alarm.message || "設定時刻です", tag: `alarm-${id}` });
+        }
+        // サウンド再生 (音声合成とプログラム生成音のいずれか)
+        if (alarm.soundType) playSound(alarm.soundType);
+        if (alarm.messageEnabled && alarm.message) repeatSpeakAlarm(alarm.message);
+      }
+      alarm.active = true;
+      updateAlarmsTable();
+    }
+
+    // アラーム停止処理
+    function stopAlarm() {
+      if (isAlarmRinging) {
+        isAlarmRinging = false;
+        stopAllSounds();
+        if ('speechSynthesis' in window) speechSynthesis.cancel();
+        activeAlarmSection.style.display = "none";
+        alarms.forEach(a => { if (a.active) a.active = false; });
+        updateAlarmsTable();
+      }
+    }
+
+    // 現在時刻表示の更新
+    function updateClock() {
+      if (currentTimeDisplay) {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        currentTimeDisplay.textContent = `${hours}:${minutes}:${seconds}`;
+      }
+    }
+
+    // 初回クリックでAudioContext初期化
+    function initializeAudioOnFirstInteraction() {
+      if (!isAudioContextInitialized) {
+        const success = initAudioContext();
+        if (success) {
+          document.body.removeEventListener('click', initializeAudioOnFirstInteraction, true);
+          document.body.removeEventListener('touchstart', initializeAudioOnFirstInteraction, true);
+        }
+      } else {
+        document.body.removeEventListener('click', initializeAudioOnFirstInteraction, true);
+        document.body.removeEventListener('touchstart', initializeAudioOnFirstInteraction, true);
+      }
+    }
     document.body.addEventListener('click', initializeAudioOnFirstInteraction, true);
     document.body.addEventListener('touchstart', initializeAudioOnFirstInteraction, true);
 
+    // 初回読み込み処理
     window.addEventListener("load", () => {
       loadAlarms();
-      // 現在時刻の表示を開始
-      updateClock(); // 初回表示
-      clockIntervalId = setInterval(updateClock, 1000); // 1秒ごとに更新
-      console.log("アラームアプリ(UI/UX改善版)が読み込まれました。");
+      updateClock();
+      clockIntervalId = setInterval(updateClock, 1000);
+      console.log("Multi Alarm Appが読み込まれました。");
     });
-
-    // ページ離脱時にインターバルをクリア (任意)
-    window.addEventListener("beforeunload", () => {
-        if (clockIntervalId) {
-            clearInterval(clockIntervalId);
-        }
-    });
-
+    window.addEventListener("beforeunload", () => { if (clockIntervalId) clearInterval(clockIntervalId); });
   </script>
 </body>
 </html>
