@@ -3,308 +3,308 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Multi Alarm App with Sound/Message Options</title>
+  <title>Multi Alarm App - Improved UI/UX</title>
   <style>
-    /* CSSリセットと基本設定 */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    /* --- CSS Variables --- */
+    :root {
+      --bg-color: #1a1a1a; /* 背景色 */
+      --card-bg-color: #2c2c2c; /* カード背景色 */
+      --input-bg-color: #383838; /* 入力欄背景色 */
+      --text-color: #e0e0e0; /* 基本テキスト色 */
+      --text-muted-color: #a0a0a0; /* 薄いテキスト色 */
+      --border-color: #444444; /* 境界線色 */
+      --accent-color: #4CAF50; /* アクセントカラー (緑) */
+      --accent-hover-color: #45a049;
+      --danger-color: #e53935; /* 危険色 (赤) */
+      --danger-hover-color: #d32f2f;
+      --info-color: #1e88e5; /* 情報色 (青) */
+      --info-hover-color: #1565c0;
+      --active-alarm-bg: linear-gradient(45deg, #c62828, #e53935); /* アラーム発動時背景 */
+      --header-bg-color: #333333; /* テーブルヘッダー背景 */
+      --row-hover-color: #424242; /* 行ホバー色 */
+      --font-family: 'Inter', Arial, sans-serif;
     }
+
+    /* --- Base Styles & Reset --- */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
     body {
-      background-color: #1f1f1f;
-      color: #e0e0e0;
-      font-family: 'Inter', Arial, sans-serif; /* Inter フォントを追加 */
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: var(--font-family);
       line-height: 1.6;
-      padding: 1rem;
+      padding: 1.5rem 1rem; /* 上下のパディングを増やす */
+      font-size: 16px; /* ベースフォントサイズ */
     }
     .container {
-      max-width: 800px; /* 最大幅を少し広げる */
+      max-width: 900px; /* コンテナ幅を少し広げる */
       margin: 0 auto;
       padding: 0 1rem;
     }
-    header {
-      text-align: center;
-      margin-bottom: 1.5rem;
-    }
+
+    /* --- Header & Current Time --- */
+    header { text-align: center; margin-bottom: 2rem; }
     header h1 {
-      font-size: 2.5rem;
+      font-size: 2.8rem; /* 少し大きく */
       margin-bottom: 0.5rem;
+      font-weight: 700;
+      color: #fff; /* ヘッダーは白 */
     }
-    /* カード風デザイン */
+    #currentTimeDisplay {
+      font-size: 1.8rem; /* 現在時刻のサイズ */
+      color: var(--text-muted-color);
+      margin-bottom: 2rem; /* 下マージン追加 */
+      font-weight: 300; /* 細めのフォントウェイト */
+      letter-spacing: 1px;
+    }
+
+    /* --- Card Styles --- */
     .card {
-      background-color: #2b2b2b;
-      border-radius: 8px;
-      padding: 1rem;
-      margin-bottom: 1.5rem;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 影を追加 */
+      background-color: var(--card-bg-color);
+      border-radius: 12px; /* 角丸を大きく */
+      padding: 1.5rem; /* パディングを増やす */
+      margin-bottom: 2rem; /* カード間のマージン */
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* 影を調整 */
+      border: 1px solid var(--border-color); /* 細い境界線 */
     }
     .card-header {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-      border-bottom: 1px solid #444;
-      padding-bottom: 0.5rem;
+      font-size: 1.6rem; /* 少し大きく */
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.8rem;
+      font-weight: 600;
     }
-    .card-body {
-      margin-bottom: 1rem;
-    }
-    /* フォームの設定 */
-    .form-group {
-      margin-bottom: 1rem;
-    }
+    .card-body { margin-bottom: 1rem; }
+
+    /* --- Form Styles --- */
+    .form-group { margin-bottom: 1.2rem; }
     label {
       display: block;
-      margin-bottom: 0.3rem;
-      font-weight: bold; /* ラベルを太字に */
+      margin-bottom: 0.5rem; /* ラベル下のマージン調整 */
+      font-weight: 600; /* ラベルを少し太く */
+      font-size: 0.95rem;
+      color: var(--text-muted-color);
     }
     input[type="time"],
     input[type="date"],
     input[type="text"],
-    select { /* select要素にもスタイル適用 */
+    select {
       width: 100%;
-      padding: 0.75rem; /* パディング調整 */
-      border: 1px solid #444; /* 枠線を追加 */
-      border-radius: 4px;
-      background-color: #333; /* 背景色変更 */
-      color: #e0e0e0; /* 文字色 */
+      padding: 0.8rem 1rem; /* パディング調整 */
+      border: 1px solid var(--border-color);
+      border-radius: 6px; /* 角丸調整 */
+      background-color: var(--input-bg-color);
+      color: var(--text-color);
       font-size: 1rem;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
-    /* チェックボックス用ラベル */
-    label.inline-checkbox {
-        display: inline-flex; /* チェックボックスとテキストを横並び */
-        align-items: center; /* 垂直方向中央揃え */
-        margin-bottom: 0;
-        font-weight: normal;
+    input[type="time"]:focus,
+    input[type="date"]:focus,
+    input[type="text"]:focus,
+    select:focus {
+        outline: none;
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.3); /* フォーカス時の影 */
+    }
+    /* Placeholder text color */
+    input::placeholder { color: #777; }
+
+    /* Radio/Checkbox Styling */
+    .radio-group, .option-inline {
+      margin: 0.8rem 0;
+      padding: 0.8rem 1rem; /* パディング調整 */
+      background-color: var(--input-bg-color);
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+    }
+    .radio-group label, .option-inline label {
+      margin-right: 1.5rem; /* オプション間のスペース */
+      cursor: pointer;
+      display: inline-flex; /* Flexboxで揃える */
+      align-items: center;
+      margin-bottom: 0.5rem;
+      font-weight: normal;
+    }
+    input[type="radio"], input[type="checkbox"] {
+        margin-right: 0.5rem;
+        accent-color: var(--accent-color); /* ブラウザ標準のスタイルにアクセントカラー適用 */
+        width: 1.1em;
+        height: 1.1em;
         cursor: pointer;
     }
-     label.inline-checkbox input[type="checkbox"] {
-        width: auto; /* 幅を自動に */
-        margin-right: 0.5rem; /* 右にスペース */
-     }
+    label.inline-checkbox { /* メッセージ有効化チェックボックス */
+        display: inline-flex; align-items: center;
+        margin-bottom: 0; font-weight: normal; cursor: pointer;
+        margin-top: 0.8rem; /* 上にスペース */
+        padding: 0.5rem;
+        border-radius: 4px;
+        transition: background-color 0.2s ease;
+    }
+    label.inline-checkbox:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+    label.inline-checkbox input[type="checkbox"] { width: auto; margin-right: 0.5rem; }
 
-    /* ラジオボタンとオプション群 */
-    .radio-group, .option-inline {
-      margin: 0.5rem 0;
-      padding: 0.5rem;
-      background-color: #333; /* 背景色 */
-      border-radius: 4px;
-    }
-    .radio-group label,
-    .option-inline label {
-      margin-right: 1rem;
-      cursor: pointer;
-      display: inline-block; /* 横並び調整 */
-      margin-bottom: 0.5rem; /* 下マージン追加 */
-      font-weight: normal; /* ラベル内の太字解除 */
-    }
-     .option-inline input[type="checkbox"] {
-        margin-right: 0.3rem; /* チェックボックス右のスペース */
-     }
-    /* ボタン */
+    /* --- Button Styles --- */
     .btn {
-      background-color: #4CAF50; /* 緑 */
-      color: #fff;
       border: none;
-      padding: 0.75rem 1.5rem; /* パディング調整 */
-      border-radius: 4px;
+      padding: 0.8rem 1.8rem; /* パディング調整 */
+      border-radius: 6px;
       cursor: pointer;
       font-size: 1rem;
-      font-weight: bold;
-      transition: background-color 0.3s ease, transform 0.1s ease;
-      margin-top: 0.5rem; /* 上マージン追加 */
+      font-weight: 600; /* 少し太く */
+      transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
+      margin-top: 0.5rem;
+      display: inline-flex; /* アイコン用 */
+      align-items: center;
+      gap: 0.5rem; /* アイコンとテキストの間隔 */
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
-    .btn:hover {
-      background-color: #45a049;
-    }
-     .btn:active {
-         transform: scale(0.98); /* クリック時の縮小効果 */
-     }
-    .btn-danger {
-      background-color: #e53935; /* 赤 */
-    }
-    .btn-danger:hover {
-      background-color: #d32f2f;
-    }
-    .btn-primary {
-      background-color: #1e88e5; /* 青 */
-    }
-    .btn-primary:hover {
-      background-color: #1565c0;
-    }
-    /* アラーム発動中の表示 */
+    .btn:hover { box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); }
+    .btn:active { transform: scale(0.97); box-shadow: none; }
+
+    .btn#addAlarmBtn { background-color: var(--accent-color); color: #fff; }
+    .btn#addAlarmBtn:hover { background-color: var(--accent-hover-color); }
+
+    .btn-danger { background-color: var(--danger-color); color: #fff; }
+    .btn-danger:hover { background-color: var(--danger-hover-color); }
+
+    .btn-primary { background-color: var(--info-color); color: #fff; }
+    .btn-primary:hover { background-color: var(--info-hover-color); }
+
+    /* --- Active Alarm Section --- */
     .active-alarm {
-      background-color: #c62828; /* 少し暗い赤 */
-      padding: 1.5rem; /* パディング調整 */
-      border-radius: 8px;
+      background: var(--active-alarm-bg);
+      padding: 1.5rem;
+      border-radius: 12px;
       text-align: center;
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
       color: white;
-      font-size: 1.2rem;
-      font-weight: bold;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      font-size: 1.3rem; /* 少し大きく */
+      font-weight: 600;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
-    .active-alarm p {
-        margin-bottom: 1rem;
-    }
-    /* テーブルデザイン */
+    .active-alarm p { margin-bottom: 1.2rem; }
+
+    /* --- Table Styles --- */
+    .card-body table { margin-bottom: 0; } /* カード内のテーブル下マージン削除 */
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 1.5rem;
-      background-color: #2b2b2b; /* テーブル背景 */
-      table-layout: fixed; /* 列幅の自動調整を防ぐ */
-    }
-    table, th, td {
-      border: 1px solid #444;
-      word-wrap: break-word; /* 長いテキストを折り返す */
+      margin-bottom: 2rem; /* テーブル下マージン */
+      background-color: var(--card-bg-color);
+      table-layout: fixed;
+      border: 1px solid var(--border-color); /* テーブル外枠 */
+      border-radius: 8px; /* テーブル角丸 */
+      overflow: hidden; /* 角丸適用のため */
     }
     th, td {
-      padding: 0.75rem; /* パディング調整 */
-      text-align: left; /* 左寄せ */
+      padding: 1rem; /* パディングを増やす */
+      text-align: left;
+      border-bottom: 1px solid var(--border-color); /* 水平線のみ */
+      border-left: none; border-right: none; border-top: none;
+      vertical-align: middle;
     }
     th {
-      background-color: #383838; /* ヘッダー背景 */
-      font-weight: bold;
+      background-color: var(--header-bg-color);
+      font-weight: 600; /* ヘッダー太字 */
+      font-size: 0.9rem;
+      text-transform: uppercase; /* 大文字化 */
+      letter-spacing: 0.5px;
+      color: var(--text-muted-color);
     }
-    /* 列幅の調整 (メッセージ内容を広く) */
-    th:nth-child(1), td:nth-child(1) { width: 4%; text-align: center;} /* # */
-    th:nth-child(2), td:nth-child(2) { width: 8%; } /* 時刻 */
-    th:nth-child(3), td:nth-child(3) { width: 8%; } /* タイプ */
-    th:nth-child(4), td:nth-child(4) { width: 12%; } /* 詳細 */
-    th:nth-child(5), td:nth-child(5) { width: 12%; } /* サウンド */
-    th:nth-child(6), td:nth-child(6) { width: 25%; } /* メッセージ内容 */
-    th:nth-child(7), td:nth-child(7) { width: 18%; } /* 次回実行 */
-    th:nth-child(8), td:nth-child(8) { width: 6%; text-align: center; } /* 有効 */
-    th:nth-child(9), td:nth-child(9) { width: 7%; text-align: center; } /* 操作 */
+     /* 列幅調整 */
+    th:nth-child(1), td:nth-child(1) { width: 4%; text-align: center;}
+    th:nth-child(2), td:nth-child(2) { width: 8%; }
+    th:nth-child(3), td:nth-child(3) { width: 8%; }
+    th:nth-child(4), td:nth-child(4) { width: 12%; }
+    th:nth-child(5), td:nth-child(5) { width: 12%; }
+    th:nth-child(6), td:nth-child(6) { width: 25%; }
+    th:nth-child(7), td:nth-child(7) { width: 18%; }
+    th:nth-child(8), td:nth-child(8) { width: 6%; text-align: center; }
+    th:nth-child(9), td:nth-child(9) { width: 7%; text-align: center; }
 
-    td {
-        vertical-align: middle; /* 中央揃え */
-    }
+    tr { border-bottom: 1px solid var(--border-color); } /* 行ごとの境界線 */
+    tr:last-child td { border-bottom: none; } /* 最後の行の下線は消す */
+    tr:nth-child(even) { background-color: rgba(0, 0, 0, 0.1); } /* 偶数行の背景色を薄く */
+    tr:hover { background-color: var(--row-hover-color); }
     tr.active {
-      background-color: #c62828 !important; /* 発動中の行の背景色 */
-      color: white;
+      background-color: rgba(229, 57, 53, 0.2) !important; /* 発動中の行の背景色を薄く */
+      color: var(--text-color);
       font-weight: bold;
+      border-left: 3px solid var(--danger-color); /* 左に赤い線 */
     }
-    tr:nth-child(even) {
-        background-color: #333; /* 偶数行の背景色 */
-    }
-    tr:hover {
-      background-color: #424242; /* ホバー時の背景色 */
-    }
-    td:last-child {
-        text-align: center; /* 操作ボタン列を中央揃え */
-    }
-    td input[type="checkbox"] {
-        cursor: pointer;
-        width: 1.2em;
-        height: 1.2em;
+     tr.active td:first-child { padding-left: calc(1rem - 3px); } /* 左線の分パディング調整 */
+
+    td { font-size: 0.95rem; }
+    td.disabled-text { color: var(--text-muted-color); font-style: italic; } /* 無効時のテキスト */
+    td .btn-danger { padding: 0.4rem 0.8rem; font-size: 0.85rem; } /* 削除ボタン調整 */
+    td input[type="checkbox"] { /* 有効チェックボックス */
+        cursor: pointer; width: 1.3em; height: 1.3em;
+        vertical-align: middle;
     }
 
-    /* レスポンシブ対応（画面幅768px以下の場合） */
-    @media (max-width: 768px) {
-        table, thead, tbody, th, td, tr {
-            display: block; /* テーブルをブロック要素に */
-        }
-        thead tr {
-            position: absolute;
-            top: -9999px;
-            left: -9999px; /* ヘッダーを隠す */
-        }
+    /* --- Responsive Table Styles --- */
+    @media (max-width: 900px) { /* ブレークポイント調整 */
+        table, thead, tbody, th, td, tr { display: block; }
+        thead tr { position: absolute; top: -9999px; left: -9999px; }
         tr {
-            border: 1px solid #555;
+            border: 1px solid var(--border-color);
+            border-radius: 8px; /* レスポンシブ時も角丸 */
             margin-bottom: 1rem;
-            background-color: #333; /* 各行の背景色 */
+            background-color: var(--card-bg-color); /* カード背景と同じに */
+            padding: 0.5rem; /* 内側に少しパディング */
         }
-         tr.active {
-             border: 1px solid #e53935;
-             background-color: #4d1b1b; /* アクティブ行の背景を少し濃く */
-         }
+         tr.active { border: 1px solid var(--danger-color); background-color: rgba(229, 57, 53, 0.1); }
         td {
-            border: none;
-            border-bottom: 1px solid #444;
+            border: none; border-bottom: 1px dashed var(--border-color); /* 区切り線を点線に */
             position: relative;
-            padding-left: 45%; /* ラベル表示用のスペースを調整 */
-            padding-top: 0.5rem;
-            padding-bottom: 0.5rem;
-            text-align: right; /* 値を右寄せ */
-            white-space: normal;
-            width: 100% !important; /* 幅を100%に */
-            min-height: 2.5em; /* 最低限の高さを確保 */
-            display: flex; /* Flexboxを使用して中央揃えしやすくする */
-            align-items: center; /* 垂直方向中央揃え */
-            justify-content: flex-end; /* 内容を右端に */
+            padding-left: 40%; /* ラベルスペース */
+            padding-top: 0.8rem; padding-bottom: 0.8rem; /* 上下パディング */
+            text-align: right; white-space: normal;
+            width: 100% !important; min-height: auto; /* 高さ自動 */
+            display: flex; align-items: center; justify-content: flex-end;
         }
+        td:last-child { border-bottom: none; } /* 最後のセルの下線削除 */
         td:before {
-            /* ラベルとして機能するよう疑似要素を設定 */
-            position: absolute;
-            top: 0; /* 上端に配置 */
-            left: 6px;
-            width: 40%; /* ラベル幅を調整 */
-            padding-right: 10px;
-            white-space: nowrap;
-            content: attr(data-label); /* data-label属性の内容を表示 */
-            font-weight: bold;
-            text-align: left; /* ラベルは左寄せ */
-            color: #aaa; /* ラベルの色 */
-            height: 100%; /* 高さをセルに合わせる */
-            display: flex; /* Flexbox */
-            align-items: center; /* 垂直方向中央揃え */
+            position: absolute; top: 0; left: 1rem; /* 左パディング調整 */
+            width: 35%; /* ラベル幅 */
+            padding-right: 10px; white-space: nowrap;
+            content: attr(data-label); font-weight: bold; text-align: left;
+            color: var(--text-muted-color); /* ラベル色調整 */
+            height: 100%; display: flex; align-items: center;
+            font-size: 0.85rem; /* ラベルのフォントサイズ */
         }
-        /* 各セルのdata-labelを設定 (JavaScript側で設定) */
-
-        /* 特定のセルの配置調整 */
-        td[data-label="#"],
-        td[data-label="有効"],
-        td[data-label="操作"] {
-             justify-content: center; /* 中央揃え */
-             padding-left: 0; /* 左パディング不要 */
+        /* 特定セルの調整 */
+        td[data-label="#"], td[data-label="有効"], td[data-label="操作"] {
+             justify-content: flex-end; /* 右寄せに戻す */
+             padding-left: 40%; /* パディングを戻す */
         }
-         td[data-label="有効"] input,
-         td[data-label="操作"] button {
-             margin-left: auto; /* 右寄せにする */
-         }
-         td[data-label="#"]:before,
-         td[data-label="有効"]:before,
-         td[data-label="操作"]:before {
-             width: 40%; /* ラベル幅確保 */
-         }
-         td[data-label="有効"] input {
-             margin-left: calc(40% + 10px); /* ラベル分を考慮して配置 */
-         }
-         td[data-label="操作"] button {
-              margin-left: calc(40% + 10px); /* ラベル分を考慮して配置 */
-         }
-
-
-        .btn {
-            padding: 0.6rem 1rem;
-            font-size: 0.9rem;
-        }
+         td[data-label="有効"] input, td[data-label="操作"] button { margin-left: 0; } /* 左マージン削除 */
+         td[data-label="#"]:before, td[data-label="有効"]:before, td[data-label="操作"]:before { width: 35%; }
     }
-
     @media (max-width: 480px) {
-      header h1 {
-        font-size: 1.8rem;
-      }
-       .card-header {
-        font-size: 1.2rem;
-      }
-       td { font-size: 0.85rem; padding: 0.4rem; padding-left: 40%;}
-       td:before { top: 0; left: 4px; width: 35%; }
-       td[data-label="有効"] input,
-       td[data-label="操作"] button {
-            margin-left: calc(35% + 10px);
-       }
+      body { padding: 1rem 0.5rem; }
+      header h1 { font-size: 2rem; }
+      #currentTimeDisplay { font-size: 1.5rem; margin-bottom: 1.5rem; }
+      .card { padding: 1rem; }
+      .card-header { font-size: 1.3rem; }
+      th, td { padding: 0.8rem; }
+      td { padding-left: 35%; }
+      td:before { left: 0.8rem; width: 30%; font-size: 0.8rem;}
+      .btn { padding: 0.7rem 1.2rem; font-size: 0.9rem; }
     }
   </style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="container">
     <header>
       <h1>Multi Alarm App</h1>
+      <div id="currentTimeDisplay">--:--:--</div>
     </header>
 
     <section id="alarmForm" class="card">
@@ -326,8 +326,9 @@
             </select>
         </div>
         <div class="form-group">
-          <label for="alarmMessage">メッセージ内容</label> <input type="text" id="alarmMessage" placeholder="例: 起きる時間です">
-           <label class="inline-checkbox" style="margin-top: 0.5rem;">
+          <label for="alarmMessage">メッセージ内容</label>
+          <input type="text" id="alarmMessage" placeholder="例: 会議の時間です">
+           <label class="inline-checkbox">
                <input type="checkbox" id="enableMessage" checked> メッセージを読み上げる
            </label>
         </div>
@@ -353,19 +354,28 @@
           <label for="onceDate">日付選択</label>
           <input type="date" id="onceDate">
         </div>
-        <button class="btn" id="addAlarmBtn" onclick="addAlarm()">アラーム追加</button>
+        <button class="btn" id="addAlarmBtn" onclick="addAlarm()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+          </svg>
+          アラーム追加
+        </button>
       </div>
     </section>
 
     <section id="activeAlarmSection" class="active-alarm" style="display:none;">
       <p id="activeAlarmMessage">アラーム発動中！</p>
-      <button class="btn btn-primary" onclick="stopAlarm()">停止</button>
+      <button class="btn btn-primary" onclick="stopAlarm()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-stop-fill" viewBox="0 0 16 16">
+          <path d="M5 3.5h6A1.5 1.5 0 0 1 12.5 5v6a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 11V5A1.5 1.5 0 0 1 5 3.5"/>
+        </svg>
+        停止
+      </button>
     </section>
 
     <section id="alarmList" class="card">
       <div class="card-header">設定済みアラーム一覧</div>
-      <div class="card-body">
-        <table id="alarmsTable">
+      <div class="card-body" style="overflow-x: auto;"> <table id="alarmsTable">
           <thead>
             <tr>
               <th>#</th>
@@ -373,7 +383,8 @@
               <th>タイプ</th>
               <th>詳細</th>
               <th>サウンド</th>
-              <th>メッセージ内容</th> <th>次回実行</th>
+              <th>メッセージ内容</th>
+              <th>次回実行</th>
               <th>有効</th>
               <th>操作</th>
             </tr>
@@ -392,6 +403,7 @@
     let alarmIdCounter = 0;
     let isAlarmRinging = false;
     const STORAGE_KEY = 'multiAlarmsWithOptions';
+    let clockIntervalId = null; // 現在時刻更新用インターバルID
 
     /*******************
      * グローバル変数 (Web Audio API用)
@@ -407,13 +419,13 @@
     const alarmSoundSelect = document.getElementById('alarmSound');
     const alarmMessageInput = document.getElementById('alarmMessage');
     const enableMessageCheckbox = document.getElementById('enableMessage');
+    const currentTimeDisplay = document.getElementById('currentTimeDisplay'); // 現在時刻表示用
 
     // --- 定数 ---
     const SOUND_TYPE_MAP = {
         "alarm": "アラーム音", "siren": "サイレン", "telephone": "電話",
         "sos": "SOS", "music": "メロディ", "": "なし"
     };
-    // レスポンシブ用ラベル (ヘッダーと一致させる)
     const TABLE_LABELS = ["#", "時刻", "タイプ", "詳細", "サウンド", "メッセージ内容", "次回実行", "有効", "操作"];
 
     // --- デスクトップ通知 ---
@@ -456,72 +468,121 @@
           return aTime - bTime;
       });
 
-      sortedAlarms.forEach((alarm, index) => {
-        const row = alarmsTableBody.insertRow();
-        row.className = alarm.active ? "active" : "";
-        if (!alarm.enabled) { row.style.opacity = "0.6"; row.style.fontStyle = "italic"; }
+      if (sortedAlarms.length === 0) {
+          // アラームがない場合の表示
+          const row = alarmsTableBody.insertRow();
+          const cell = row.insertCell();
+          cell.colSpan = TABLE_LABELS.length; // 全カラムを結合
+          cell.textContent = "設定されているアラームはありません。";
+          cell.style.textAlign = "center";
+          cell.style.padding = "2rem";
+          cell.style.color = "var(--text-muted-color)";
+      } else {
+          sortedAlarms.forEach((alarm, index) => {
+            const row = alarmsTableBody.insertRow();
+            row.className = alarm.active ? "active" : "";
+            if (!alarm.enabled) { row.style.opacity = "0.6"; row.style.fontStyle = "italic"; }
 
-        // ヘルパー関数でセルとdata-labelを追加
-        function addCell(content, label) {
-            const cell = row.insertCell();
-            // HTMLエンティティをエスケープ (メッセージ内容用)
-            const escapedContent = typeof content === 'string' ? content.replace(/</g, "&lt;").replace(/>/g, "&gt;") : content;
-            cell.innerHTML = escapedContent;
-            cell.setAttribute('data-label', label);
-            return cell;
-        }
+            function addCell(content, label) {
+                const cell = row.insertCell();
+                const escapedContent = typeof content === 'string' ? content.replace(/</g, "&lt;").replace(/>/g, "&gt;") : content;
+                cell.innerHTML = escapedContent;
+                cell.setAttribute('data-label', label);
+                return cell;
+            }
 
-        addCell(index + 1, TABLE_LABELS[0]); // #
-        addCell(alarm.time, TABLE_LABELS[1]); // 時刻
-        let typeText = "";
-        if (alarm.mode === "daily") typeText = "毎日";
-        else if (alarm.mode === "weekly") typeText = "曜日指定";
-        else if (alarm.mode === "once") typeText = "一回限り";
-        addCell(typeText, TABLE_LABELS[2]); // タイプ
-        let detail = "-";
-        if (alarm.mode === "weekly") detail = convertDaysToJapanese(alarm.days);
-        else if (alarm.mode === "once") detail = alarm.date;
-        addCell(detail, TABLE_LABELS[3]); // 詳細
+            addCell(index + 1, TABLE_LABELS[0]); // #
+            addCell(alarm.time, TABLE_LABELS[1]); // 時刻
+            let typeText = "";
+            if (alarm.mode === "daily") typeText = "毎日";
+            else if (alarm.mode === "weekly") typeText = "曜日指定";
+            else if (alarm.mode === "once") typeText = "一回限り";
+            addCell(typeText, TABLE_LABELS[2]); // タイプ
+            let detail = "-";
+            if (alarm.mode === "weekly") detail = convertDaysToJapanese(alarm.days);
+            else if (alarm.mode === "once") detail = alarm.date;
+            addCell(detail, TABLE_LABELS[3]); // 詳細
+            const soundDisplay = SOUND_TYPE_MAP[alarm.soundType] || '不明';
+            addCell(soundDisplay, TABLE_LABELS[4]); // サウンド
+            const messageCell = addCell(alarm.message || "", TABLE_LABELS[5]); // メッセージ内容
+            if (!alarm.messageEnabled && alarm.message) { // メッセージはあるが読み上げない場合
+                 messageCell.classList.add('disabled-text');
+            } else if (!alarm.message) { // メッセージ自体がない場合
+                 messageCell.innerHTML = `<span style="color: var(--text-muted-color);">-</span>`; // ハイフン表示
+            }
 
-        // サウンド表示
-        const soundDisplay = SOUND_TYPE_MAP[alarm.soundType] || '不明';
-        addCell(soundDisplay, TABLE_LABELS[4]); // サウンド
+            const nextTimeText = (alarm.enabled && alarm.nextTime) ? alarm.nextTime.toLocaleString('ja-JP', { dateStyle: 'short', timeStyle: 'short'}) : "無効"; // 日付フォーマット変更
+            const nextTimeCell = addCell(nextTimeText, TABLE_LABELS[6]); // 次回実行
+             if (!alarm.enabled) nextTimeCell.classList.add('disabled-text');
 
-        // --- メッセージ内容表示 (変更箇所) ---
-        const messageCell = addCell(alarm.message || "", TABLE_LABELS[5]); // メッセージ内容 (空なら空白)
-        if (!alarm.messageEnabled) messageCell.style.color = '#aaa'; // 読み上げ無効なら薄く
+            const enableCell = addCell(`<input type="checkbox" title="アラームの有効/無効を切り替え" id="toggle_${alarm.id}" onchange="toggleAlarmState(${alarm.id})" ${alarm.enabled ? "checked" : ""}>`, TABLE_LABELS[7]); // 有効
+            enableCell.style.textAlign = 'center';
 
-        // 次回実行
-        const nextTimeText = (alarm.enabled && alarm.nextTime) ? alarm.nextTime.toLocaleString() : "無効";
-        const nextTimeCell = addCell(nextTimeText, TABLE_LABELS[6]); // 次回実行
-         if (!alarm.enabled) nextTimeCell.style.color = '#aaa';
-
-        // 有効／無効切替
-        const enableCell = addCell(`<input type="checkbox" title="アラームの有効/無効を切り替え" id="toggle_${alarm.id}" onchange="toggleAlarmState(${alarm.id})" ${alarm.enabled ? "checked" : ""}>`, TABLE_LABELS[7]); // 有効
-        enableCell.style.textAlign = 'center';
-
-        // 操作（削除ボタン）
-        const actionCell = addCell(`<button class="btn btn-danger" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;" onclick="removeAlarm(${alarm.id})">削除</button>`, TABLE_LABELS[8]); // 操作
-        actionCell.style.textAlign = 'center';
-      });
+            // 削除ボタンにアイコン追加 (SVG例)
+            const actionCell = addCell(`<button class="btn btn-danger" title="アラームを削除" onclick="removeAlarm(${alarm.id})">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                  <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                </svg>
+            </button>`, TABLE_LABELS[8]); // 操作
+            actionCell.style.textAlign = 'center';
+          });
+      }
     }
 
     function toggleAlarmState(id) { initAudioContext(); const alarm = alarms.find(a => a.id === id); if (!alarm) return; const checkbox = document.getElementById("toggle_" + id); alarm.enabled = checkbox.checked; if (alarm.enabled) { scheduleAlarm(alarm); } else { if (alarm.timerId) { clearTimeout(alarm.timerId); alarm.timerId = null; } alarm.nextTime = null; } saveAlarms(); updateAlarmsTable(); }
-    function removeAlarm(id) { const idx = alarms.findIndex(a => a.id === id); if (idx !== -1) { if (alarms[idx].timerId) clearTimeout(alarms[idx].timerId); alarms.splice(idx, 1); updateAlarmsTable(); saveAlarms(); } }
+    function removeAlarm(id) {
+        // 確認ダイアログを追加 (任意)
+        const alarmToRemove = alarms.find(a => a.id === id);
+        if (alarmToRemove && confirm(`時刻 ${alarmToRemove.time} のアラーム「${alarmToRemove.message || '(メッセージなし)'}」を削除しますか？`)) {
+            const idx = alarms.findIndex(a => a.id === id);
+            if (idx !== -1) {
+                if (alarms[idx].timerId) clearTimeout(alarms[idx].timerId);
+                alarms.splice(idx, 1);
+                updateAlarmsTable();
+                saveAlarms();
+            }
+        }
+     }
     function repeatSpeakAlarm(message) { if (!isAlarmRinging || !('speechSynthesis' in window)) return; speechSynthesis.cancel(); let u = new SpeechSynthesisUtterance(message); u.lang = "ja-JP"; u.rate = 1.0; u.pitch = 1.0; u.onend = function() { if (isAlarmRinging) { setTimeout(() => { if (isAlarmRinging) speechSynthesis.speak(u); }, 500); } }; u.onerror = function(e) { console.error('SpeechSynthesis Error:', e.error); isAlarmRinging = false; stopAlarm(); }; speechSynthesis.speak(u); }
-    function triggerAlarm(id) { /* (変更なし) */ }
-    function stopAlarm() { /* (変更なし) */ }
+    function triggerAlarm(id) { const alarm = alarms.find(a => a.id === id); if (!alarm || !alarm.enabled) return; console.log(`Alarm ${id} triggered: Sound=${alarm.soundType}, Msg=${alarm.messageEnabled ? alarm.message : 'Disabled'}`); isAlarmRinging = true; alarm.active = true; activeAlarmMessage.textContent = alarm.message || "(メッセージなし)"; activeAlarmSection.style.display = "block"; if ("Notification" in window && Notification.permission === "granted") { new Notification("アラーム発動！", { body: alarm.message || "設定時刻です", tag: `alarm-${id}` }); } if (alarm.soundType) playSound(alarm.soundType); if (alarm.messageEnabled && alarm.message) repeatSpeakAlarm(alarm.message); updateAlarmsTable(); }
+    function stopAlarm() { if (isAlarmRinging) { console.log("Stopping alarm."); isAlarmRinging = false; stopAllSounds(); if ('speechSynthesis' in window) speechSynthesis.cancel(); activeAlarmSection.style.display = "none"; alarms.forEach(a => { if (a.active) a.active = false; }); updateAlarmsTable(); } }
+
+    /*******************
+     * 現在時刻表示 更新関数
+     *******************/
+     function updateClock() {
+         if (currentTimeDisplay) {
+             const now = new Date();
+             // toLocaleTimeString を使うとロケール依存のフォーマットになる
+             // currentTimeDisplay.textContent = now.toLocaleTimeString('ja-JP');
+             // または、HH:MM:SS 形式に整形
+             const hours = String(now.getHours()).padStart(2, '0');
+             const minutes = String(now.getMinutes()).padStart(2, '0');
+             const seconds = String(now.getSeconds()).padStart(2, '0');
+             currentTimeDisplay.textContent = `${hours}:${minutes}:${seconds}`;
+         }
+     }
 
     /*******************
      * 初期化処理
      *******************/
-    function initializeAudioOnFirstInteraction() { /* (変更なし) */ }
+    function initializeAudioOnFirstInteraction() { if (!isAudioContextInitialized) { const success = initAudioContext(); if (success) { console.log("AudioContext initialized on user interaction."); document.body.removeEventListener('click', initializeAudioOnFirstInteraction, true); document.body.removeEventListener('touchstart', initializeAudioOnFirstInteraction, true); } } else { document.body.removeEventListener('click', initializeAudioOnFirstInteraction, true); document.body.removeEventListener('touchstart', initializeAudioOnFirstInteraction, true); } }
     document.body.addEventListener('click', initializeAudioOnFirstInteraction, true);
     document.body.addEventListener('touchstart', initializeAudioOnFirstInteraction, true);
 
     window.addEventListener("load", () => {
       loadAlarms();
-      console.log("アラームアプリ(一覧表示改善)が読み込まれました。");
+      // 現在時刻の表示を開始
+      updateClock(); // 初回表示
+      clockIntervalId = setInterval(updateClock, 1000); // 1秒ごとに更新
+      console.log("アラームアプリ(UI/UX改善版)が読み込まれました。");
+    });
+
+    // ページ離脱時にインターバルをクリア (任意)
+    window.addEventListener("beforeunload", () => {
+        if (clockIntervalId) {
+            clearInterval(clockIntervalId);
+        }
     });
 
   </script>
