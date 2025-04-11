@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>マルチアラーム - 有効/無効切替＆時報機能付き</title>
+  <title>マルチアラーム - 有効/無効切替＆音声合成対応</title>
   <style>
     /* ダークテーマ・モダンなクールデザイン */
     body {
@@ -73,14 +73,6 @@
     }
     .config button:hover {
       background-color: #45a049;
-    }
-    /* 時報設定エリア */
-    .chime-config {
-      margin-top: 1rem;
-      text-align: center;
-    }
-    .chime-config input[type="checkbox"] {
-      margin-right: 0.5rem;
     }
     /* アラーム一覧テーブル */
     table {
@@ -169,14 +161,6 @@
       <input type="date" id="onceDate">
     </div>
     <button onclick="addAlarm()">アラーム追加</button>
-    
-    <!-- 時報機能設定 -->
-    <div class="chime-config">
-      <label>
-        <input type="checkbox" id="enableChime" onchange="toggleChime()">
-        時報機能を有効にする (1時間毎)
-      </label>
-    </div>
   </section>
   
   <!-- 設定済みアラーム一覧 -->
@@ -205,11 +189,6 @@
     <button onclick="stopAlarm()">停止</button>
   </section>
   
-  <!-- アラーム音（ループ再生） -->
-  <audio id="alarmAudio" src="zunda_time.wav" loop></audio>
-  <!-- 時報音（単発再生） -->
-  <audio id="chimeAudio" src="zunda_time.wav"></audio>
-  
   <script>
     /*******************
      * グローバル変数
@@ -217,11 +196,8 @@
     let alarms = [];            // アラーム設定リスト
     let alarmIdCounter = 0;     
     let isAlarmRinging = false; // 現在アラームが鳴っているか
-    let chimeEnabled = false;   // 時報機能の有効／無効
-    let hourlyChimeTimer = null;
     
     const STORAGE_KEY = 'alarms';
-    const CHIME_KEY   = 'chimeEnabled';
     
     /*******************
      * localStorage 保存／読み込み
@@ -266,14 +242,6 @@
         } catch(e) {
           console.error("保存データの読み込みに失敗:", e);
         }
-      }
-    }
-    function loadChimeSetting() {
-      const c = localStorage.getItem(CHIME_KEY);
-      if(c !== null) {
-        chimeEnabled = (c === "true");
-        document.getElementById("enableChime").checked = chimeEnabled;
-        if(chimeEnabled) scheduleHourlyChime();
       }
     }
     
@@ -333,6 +301,14 @@
     }
     
     /**
+     * 曜日数値（0～6）を日本語の曜日に変換する
+     */
+    function convertDaysToJapanese(days) {
+      const dayNames = ["日", "月", "火", "水", "木", "金", "土"];
+      return days.map(d => dayNames[d] || d).join("、");
+    }
+    
+    /**
      * 次回実行時刻を計算
      */
     function computeNextAlarmTime(alarm) {
@@ -352,10 +328,12 @@
               let currentMinutes = now.getHours() * 60 + now.getMinutes();
               let alarmMinutes = hour * 60 + minute;
               if (alarmMinutes > currentMinutes) {
-                daysAhead = i; break;
+                daysAhead = i;
+                break;
               }
             } else {
-              daysAhead = i; break;
+              daysAhead = i;
+              break;
             }
           }
         }
@@ -401,7 +379,7 @@
     function updateAlarmsTable() {
       const tbody = document.getElementById("alarmsTable").getElementsByTagName("tbody")[0];
       tbody.innerHTML = "";
-      // 次回実行時刻順にソート（次回実行時刻がない場合は後ろへ）
+      // 次回実行時刻順にソート（nextTime がないものは後ろへ）
       const sortedAlarms = alarms.slice().sort((a, b) => {
         const aTime = a.nextTime ? new Date(a.nextTime).getTime() : Infinity;
         const bTime = b.nextTime ? new Date(b.nextTime).getTime() : Infinity;
@@ -416,7 +394,7 @@
           alarm.mode === "daily" ? "毎日" :
           alarm.mode === "weekly" ? "曜日指定" : "一回限り";
         row.insertCell(3).innerText = 
-          alarm.mode === "weekly" ? ("[ " + (alarm.days || []).join(", ") + " ]") :
+          alarm.mode === "weekly" ? convertDaysToJapanese(alarm.days) :
           (alarm.mode === "once" ? alarm.date : "-");
         row.insertCell(4).innerText = alarm.nextTime ? alarm.nextTime.toLocaleString() : "-";
         // 有効／無効切替（チェックボックス）
@@ -457,8 +435,14 @@
     }
     
     /*******************
-     * アラーム発動・停止処理
+     * 音声再生（SpeechSynthesis）によるアラーム発動処理
      *******************/
+    function speakAlarmMessage() {
+      const utterance = new SpeechSynthesisUtterance("時間になりました。");
+      utterance.lang = "ja-JP";
+      speechSynthesis.speak(utterance);
+    }
+    
     function triggerAlarm(id) {
       // 有効なアラームのみ実行
       const alarm = alarms.find(a => a.id === id);
@@ -466,9 +450,8 @@
       if (!isAlarmRinging) {
         isAlarmRinging = true;
         document.getElementById("activeAlarmSection").style.display = "block";
-        const audio = document.getElementById("alarmAudio");
-        audio.currentTime = 0;
-        audio.play();
+        // 音声合成でデフォルトメッセージを読み上げる
+        speakAlarmMessage();
       }
       alarm.active = true;
       updateAlarmsTable();
@@ -476,8 +459,7 @@
     
     function stopAlarm() {
       if (isAlarmRinging) {
-        const audio = document.getElementById("alarmAudio");
-        audio.pause();
+        // speechSynthesis は停止APIがないため、実質的に読み上げ中の次の発話まで待つ
         isAlarmRinging = false;
         document.getElementById("activeAlarmSection").style.display = "none";
         alarms.forEach(a => { if(a.active) a.active = false; });
@@ -486,46 +468,10 @@
     }
     
     /*******************
-     * 時報機能（1時間毎）の実装
-     *******************/
-    function toggleChime() {
-      const cb = document.getElementById("enableChime");
-      chimeEnabled = cb.checked;
-      localStorage.setItem(CHIME_KEY, chimeEnabled);
-      if(chimeEnabled) {
-        scheduleHourlyChime();
-      } else {
-        if(hourlyChimeTimer) {
-          clearTimeout(hourlyChimeTimer);
-          hourlyChimeTimer = null;
-        }
-      }
-    }
-    function scheduleHourlyChime() {
-      if(!chimeEnabled) return;
-      const now = new Date();
-      const nextHour = new Date(now);
-      nextHour.setHours(now.getHours() + 1, 0, 0, 0);
-      const delay = nextHour.getTime() - now.getTime();
-      hourlyChimeTimer = setTimeout(() => {
-        playChime();
-        scheduleHourlyChime();
-      }, delay);
-    }
-    function playChime() {
-      if(chimeEnabled) {
-        const chimeAudio = document.getElementById("chimeAudio");
-        chimeAudio.currentTime = 0;
-        chimeAudio.play();
-      }
-    }
-    
-    /*******************
      * 初回読み込み時処理
      *******************/
     window.addEventListener("load", () => {
       loadAlarms();
-      loadChimeSetting();
     });
   </script>
 </body>
