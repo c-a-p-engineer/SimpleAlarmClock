@@ -2,123 +2,159 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>マルチアラーム - 音声合成＆通知対応</title>
-  <!-- Bootstrap 5.3.0 CDN -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ENjdO4Dr2bkBIFxQpeoVMQcJ6Q1pb9K/7rLq1YFfFQh2eS5BnvWic8M0B4d7xB8+" crossorigin="anonymous">
+  <!-- レスポンシブ対応 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>マルチアラーム - レスポンシブ対応</title>
   <style>
+    /* リセット・基本設定 */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background-color: #1f1f1f;
       color: #e0e0e0;
+      font-family: Arial, sans-serif;
+      line-height: 1.4;
+      padding: 1rem;
     }
     .container {
-      margin-top: 2rem;
       max-width: 800px;
+      margin: 0 auto;
+      padding: 0 1rem;
     }
+    header { text-align: center; margin-bottom: 1.5rem; }
+    h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    
+    /* カード風のボックス（フォーム／一覧） */
+    .card {
+      background-color: #2b2b2b;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .card-header {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid #444;
+      padding-bottom: 0.5rem;
+    }
+    .card-body { margin-bottom: 1rem; }
+    
+    /* フォーム */
+    .form-group { margin-bottom: 1rem; }
+    label { display: block; margin-bottom: 0.3rem; }
+    input[type="time"],
+    input[type="date"],
+    input[type="text"] {
+      width: 100%;
+      padding: 0.5rem;
+      border: none;
+      border-radius: 4px;
+    }
+    .radio-group { margin-bottom: 1rem; }
+    .radio-group label {
+      display: inline-block;
+      margin-right: 1rem;
+      cursor: pointer;
+    }
+    .option-inline label {
+      display: inline-block;
+      margin-right: 1rem;
+      cursor: pointer;
+    }
+    .btn {
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .btn:hover { background-color: #45a049; }
+    .btn-danger { background-color: #e53935; }
+    .btn-danger:hover { background-color: #d32f2f; }
+    .btn-primary { background-color: #0d47a1; }
+    .btn-primary:hover { background-color: #1565c0; }
+    
+    /* アクティブアラーム表示 */
     .active-alarm {
       background-color: #b71c1c;
       padding: 1rem;
-      border-radius: 0.3rem;
+      border-radius: 8px;
       text-align: center;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
     }
-    .table thead th {
-      background-color: #333;
-      color: #e0e0e0;
-    }
-    .table tbody tr.active {
-      background-color: #b71c1c;
-    }
-    .table tbody tr.upcoming:hover {
-      background-color: #2a2a2a;
+    
+    /* テーブル */
+    table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+    table, th, td { border: 1px solid #444; }
+    th, td { padding: 0.5rem; text-align: center; }
+    th { background-color: #333; }
+    tr.active { background-color: #b71c1c; }
+    tr.upcoming:hover { background-color: #2a2a2a; }
+    
+    /* レスポンシブ対応 */
+    @media (max-width: 600px) {
+      h1 { font-size: 2rem; }
+      .card-header { font-size: 1.3rem; }
+      th, td { font-size: 0.8rem; }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- ヘッダー -->
-    <header class="mb-4">
-      <h1 class="text-center">マルチアラーム</h1>
+    <header>
+      <h1>マルチアラーム</h1>
     </header>
-
+    
     <!-- アラーム設定入力エリア -->
-    <div class="card mb-4">
+    <div class="card">
       <div class="card-header">アラーム追加</div>
       <div class="card-body">
-        <div class="mb-3">
-          <label for="alarmTime" class="form-label">時刻入力</label>
-          <input type="time" id="alarmTime" class="form-control">
+        <div class="form-group">
+          <label for="alarmTime">時刻入力</label>
+          <input type="time" id="alarmTime">
         </div>
-        <div class="mb-3">
-          <label for="alarmMessage" class="form-label">メッセージ</label>
-          <input type="text" id="alarmMessage" class="form-control" placeholder="例: 時間になりました。">
+        <div class="form-group">
+          <label for="alarmMessage">メッセージ</label>
+          <input type="text" id="alarmMessage" placeholder="例: 時間になりました。">
         </div>
-        <fieldset class="mb-3">
-          <legend class="col-form-label">アラームタイプ</legend>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="alarmType" id="dailyRadio" value="daily" checked>
-            <label class="form-check-label" for="dailyRadio">毎日</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="alarmType" id="weeklyRadio" value="weekly">
-            <label class="form-check-label" for="weeklyRadio">曜日指定</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="alarmType" id="onceRadio" value="once">
-            <label class="form-check-label" for="onceRadio">一回限り</label>
-          </div>
-        </fieldset>
+        <div class="radio-group">
+          <label><input type="radio" name="alarmType" value="daily" checked> 毎日</label>
+          <label><input type="radio" name="alarmType" value="weekly"> 曜日指定</label>
+          <label><input type="radio" name="alarmType" value="once"> 一回限り</label>
+        </div>
         <!-- 曜日指定オプション -->
-        <div id="weeklyOptions" class="mb-3" style="display:none;">
-          <label class="form-label">曜日を選択</label><br>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="day0" value="0">
-            <label class="form-check-label" for="day0">日</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="day1" value="1">
-            <label class="form-check-label" for="day1">月</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="day2" value="2">
-            <label class="form-check-label" for="day2">火</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="day3" value="3">
-            <label class="form-check-label" for="day3">水</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="day4" value="4">
-            <label class="form-check-label" for="day4">木</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="day5" value="5">
-            <label class="form-check-label" for="day5">金</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="day6" value="6">
-            <label class="form-check-label" for="day6">土</label>
+        <div class="form-group" id="weeklyOptions" style="display:none;">
+          <label>曜日を選択</label>
+          <div class="option-inline">
+            <label><input type="checkbox" value="0"> 日</label>
+            <label><input type="checkbox" value="1"> 月</label>
+            <label><input type="checkbox" value="2"> 火</label>
+            <label><input type="checkbox" value="3"> 水</label>
+            <label><input type="checkbox" value="4"> 木</label>
+            <label><input type="checkbox" value="5"> 金</label>
+            <label><input type="checkbox" value="6"> 土</label>
           </div>
         </div>
         <!-- 一回限りオプション -->
-        <div id="onceOptions" class="mb-3" style="display:none;">
-          <label for="onceDate" class="form-label">日付選択</label>
-          <input type="date" id="onceDate" class="form-control">
+        <div class="form-group" id="onceOptions" style="display:none;">
+          <label for="onceDate">日付選択</label>
+          <input type="date" id="onceDate">
         </div>
-        <button class="btn btn-success" onclick="addAlarm()">アラーム追加</button>
+        <button class="btn" onclick="addAlarm()">アラーム追加</button>
       </div>
     </div>
-
+    
     <!-- アラーム発動中表示 -->
     <div id="activeAlarmSection" class="active-alarm" style="display:none;">
       <h4>アラーム発動中！</h4>
       <button class="btn btn-primary" onclick="stopAlarm()">停止</button>
     </div>
-
+    
     <!-- 設定済みアラーム一覧 -->
     <div class="card">
       <div class="card-header">設定済みアラーム一覧</div>
-      <div class="card-body p-0">
-        <table class="table table-dark table-striped mb-0">
+      <div class="card-body">
+        <table>
           <thead>
             <tr>
               <th>#</th>
@@ -135,24 +171,19 @@
         </table>
       </div>
     </div>
+    
   </div>
-
-  <!-- Bootstrap 5 JavaScript (Popper.js 同梱) -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-q2ky+TLUX6eFTD9eAK/pE6voJz/y7BwH5XGd2UVISalSmLrXr2kkdQHyg2HykGmZ" crossorigin="anonymous"></script>
   
   <script>
     /*******************
      * グローバル変数
      *******************/
-    let alarms = [];            // アラーム設定リスト
-    let alarmIdCounter = 0;     
-    let isAlarmRinging = false; // アラーム発動中フラグ
-
+    let alarms = [];
+    let alarmIdCounter = 0;
+    let isAlarmRinging = false;
     const STORAGE_KEY = 'alarms';
 
-    /*******************
-     * 通知許可リクエスト
-     *******************/
+    // 通知許可
     if ("Notification" in window && Notification.permission !== "granted") {
       Notification.requestPermission();
     }
@@ -172,6 +203,7 @@
       }));
       localStorage.setItem(STORAGE_KEY, JSON.stringify(alarmsToSave));
     }
+    
     function loadAlarms() {
       const data = localStorage.getItem(STORAGE_KEY);
       if (data) {
@@ -189,12 +221,8 @@
               active: false
             };
             alarms.push(alarm);
-            if (alarm.id >= alarmIdCounter) {
-              alarmIdCounter = alarm.id + 1;
-            }
-            if (alarm.enabled) {
-              scheduleAlarm(alarm);
-            }
+            if (alarm.id >= alarmIdCounter) { alarmIdCounter = alarm.id + 1; }
+            if (alarm.enabled) { scheduleAlarm(alarm); }
           });
           updateAlarmsTable();
         } catch(e) {
@@ -204,7 +232,7 @@
     }
     
     /*******************
-     * ユーザー入力表示の制御
+     * ユーザー入力表示制御
      *******************/
     document.querySelectorAll('input[name="alarmType"]').forEach(radio => {
       radio.addEventListener('change', function() {
@@ -241,7 +269,7 @@
       };
       if (alarmType === 'weekly') {
         const checkedDays = Array.from(document.querySelectorAll('#weeklyOptions input[type="checkbox"]:checked'))
-                              .map(cb => parseInt(cb.value, 10));
+                             .map(cb => parseInt(cb.value, 10));
         if (checkedDays.length === 0) {
           alert("曜日指定の場合、少なくとも1つの曜日を選択してください。");
           return;
@@ -257,23 +285,17 @@
       }
       alarms.push(alarm);
       alarmIdCounter++;
-      if (alarm.enabled) scheduleAlarm(alarm);
+      if (alarm.enabled) { scheduleAlarm(alarm); }
       updateAlarmsTable();
       saveAlarms();
       alert("アラームを追加しました。");
     }
     
-    /**
-     * 曜日数値（0～6）を日本語の曜日に変換する
-     */
     function convertDaysToJapanese(days) {
       const dayNames = ["日", "月", "火", "水", "木", "金", "土"];
       return days.map(d => dayNames[d] || d).join("、");
     }
     
-    /**
-     * 次回実行時刻を計算
-     */
     function computeNextAlarmTime(alarm) {
       const now = new Date();
       const [hour, minute] = alarm.time.split(":").map(Number);
@@ -290,14 +312,8 @@
             if (i === 0) {
               let currentMinutes = now.getHours() * 60 + now.getMinutes();
               let alarmMinutes = hour * 60 + minute;
-              if (alarmMinutes > currentMinutes) {
-                daysAhead = i;
-                break;
-              }
-            } else {
-              daysAhead = i;
-              break;
-            }
+              if (alarmMinutes > currentMinutes) { daysAhead = i; break; }
+            } else { daysAhead = i; break; }
           }
         }
         if (daysAhead === null) daysAhead = 7;
@@ -312,9 +328,6 @@
       return nextTime;
     }
     
-    /**
-     * 指定アラームのタイマーをスケジュール
-     */
     function scheduleAlarm(alarm) {
       if (!alarm.enabled) return;
       const nextTime = computeNextAlarmTime(alarm);
@@ -336,13 +349,9 @@
       }, timeout);
     }
     
-    /*******************
-     * アラーム一覧表示・削除・有効／無効切替
-     *******************/
     function updateAlarmsTable() {
       const tbody = document.getElementById("alarmsTable").getElementsByTagName("tbody")[0];
       tbody.innerHTML = "";
-      // 次回実行時刻順にソート（nextTime がないものは後ろへ）
       const sortedAlarms = alarms.slice().sort((a, b) => {
         const aTime = a.nextTime ? new Date(a.nextTime).getTime() : Infinity;
         const bTime = b.nextTime ? new Date(b.nextTime).getTime() : Infinity;
@@ -356,14 +365,14 @@
         row.insertCell(2).innerText = 
           alarm.mode === "daily" ? "毎日" :
           alarm.mode === "weekly" ? "曜日指定" : "一回限り";
-        row.insertCell(3).innerText = 
+        row.insertCell(3).innerText =
           alarm.mode === "weekly" ? convertDaysToJapanese(alarm.days) :
           (alarm.mode === "once" ? alarm.date : "-");
         row.insertCell(4).innerText = alarm.message;
         row.insertCell(5).innerText = alarm.nextTime ? alarm.nextTime.toLocaleString() : "-";
         const enableCell = row.insertCell(6);
         enableCell.innerHTML = `<input type="checkbox" id="toggle_${alarm.id}" onchange="toggleAlarmState(${alarm.id})" ${alarm.enabled ? "checked" : ""}>`;
-        row.insertCell(7).innerHTML = `<button class="btn btn-sm btn-danger" onclick="removeAlarm(${alarm.id})">削除</button>`;
+        row.insertCell(7).innerHTML = `<button class="btn btn-danger" onclick="removeAlarm(${alarm.id})">削除</button>`;
       });
     }
     
@@ -395,17 +404,13 @@
       }
     }
     
-    /*******************
-     * 音声合成によるアラーム発動処理（繰り返し実行）
-     *******************/
+    // 音声合成による繰り返し発話
     function repeatSpeakAlarm(message) {
       if (!isAlarmRinging) return;
-      let utterance = new SpeechSynthesisUtterance(message);
+      const utterance = new SpeechSynthesisUtterance(message);
       utterance.lang = "ja-JP";
       utterance.onend = function() {
-        if (isAlarmRinging) {
-          repeatSpeakAlarm(message);
-        }
+        if (isAlarmRinging) { repeatSpeakAlarm(message); }
       };
       speechSynthesis.speak(utterance);
     }
@@ -416,11 +421,9 @@
       if (!isAlarmRinging) {
         isAlarmRinging = true;
         document.getElementById("activeAlarmSection").style.display = "block";
-        // デスクトップ通知（許可されていれば）
         if ("Notification" in window && Notification.permission === "granted") {
           new Notification("アラーム発動", { body: alarm.message });
         }
-        // 繰り返し音声合成実行
         repeatSpeakAlarm(alarm.message);
       }
       alarm.active = true;
@@ -437,12 +440,7 @@
       }
     }
     
-    /*******************
-     * 初回読み込み時処理
-     *******************/
-    window.addEventListener("load", () => {
-      loadAlarms();
-    });
+    window.addEventListener("load", () => { loadAlarms(); });
   </script>
 </body>
 </html>
