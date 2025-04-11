@@ -2,17 +2,21 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <!-- レスポンシブ対応 -->
+  <!-- レスポンシブ対応のためのmetaタグ -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>マルチアラーム - レスポンシブ対応</title>
+  <title>Multi Alarm App</title>
   <style>
-    /* リセット・基本設定 */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    /* CSSリセットと基本設定 */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
     body {
       background-color: #1f1f1f;
       color: #e0e0e0;
       font-family: Arial, sans-serif;
-      line-height: 1.4;
+      line-height: 1.6;
       padding: 1rem;
     }
     .container {
@@ -20,10 +24,15 @@
       margin: 0 auto;
       padding: 0 1rem;
     }
-    header { text-align: center; margin-bottom: 1.5rem; }
-    h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
-    
-    /* カード風のボックス（フォーム／一覧） */
+    header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+    /* カード風デザイン */
     .card {
       background-color: #2b2b2b;
       border-radius: 8px;
@@ -36,11 +45,17 @@
       border-bottom: 1px solid #444;
       padding-bottom: 0.5rem;
     }
-    .card-body { margin-bottom: 1rem; }
-    
-    /* フォーム */
-    .form-group { margin-bottom: 1rem; }
-    label { display: block; margin-bottom: 0.3rem; }
+    .card-body {
+      margin-bottom: 1rem;
+    }
+    /* フォームの設定 */
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.3rem;
+    }
     input[type="time"],
     input[type="date"],
     input[type="text"] {
@@ -49,17 +64,16 @@
       border: none;
       border-radius: 4px;
     }
-    .radio-group { margin-bottom: 1rem; }
-    .radio-group label {
-      display: inline-block;
-      margin-right: 1rem;
-      cursor: pointer;
+    /* ラジオボタンとオプション群 */
+    .radio-group, .option-inline {
+      margin: 0.5rem 0;
     }
+    .radio-group label,
     .option-inline label {
-      display: inline-block;
       margin-right: 1rem;
       cursor: pointer;
     }
+    /* ボタン */
     .btn {
       background-color: #4CAF50;
       color: #fff;
@@ -68,13 +82,22 @@
       border-radius: 4px;
       cursor: pointer;
     }
-    .btn:hover { background-color: #45a049; }
-    .btn-danger { background-color: #e53935; }
-    .btn-danger:hover { background-color: #d32f2f; }
-    .btn-primary { background-color: #0d47a1; }
-    .btn-primary:hover { background-color: #1565c0; }
-    
-    /* アクティブアラーム表示 */
+    .btn:hover {
+      background-color: #45a049;
+    }
+    .btn-danger {
+      background-color: #e53935;
+    }
+    .btn-danger:hover {
+      background-color: #d32f2f;
+    }
+    .btn-primary {
+      background-color: #0d47a1;
+    }
+    .btn-primary:hover {
+      background-color: #1565c0;
+    }
+    /* アラーム発動中の表示 */
     .active-alarm {
       background-color: #b71c1c;
       padding: 1rem;
@@ -82,42 +105,66 @@
       text-align: center;
       margin-bottom: 1.5rem;
     }
-    
-    /* テーブル */
-    table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
-    table, th, td { border: 1px solid #444; }
-    th, td { padding: 0.5rem; text-align: center; }
-    th { background-color: #333; }
-    tr.active { background-color: #b71c1c; }
-    tr.upcoming:hover { background-color: #2a2a2a; }
-    
-    /* レスポンシブ対応 */
+    /* テーブルデザイン */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+    }
+    table, th, td {
+      border: 1px solid #444;
+    }
+    th, td {
+      padding: 0.5rem;
+      text-align: center;
+    }
+    th {
+      background-color: #333;
+    }
+    tr.active {
+      background-color: #b71c1c;
+    }
+    tr.upcoming:hover {
+      background-color: #2a2a2a;
+    }
+    /* レスポンシブ対応（画面幅600px以下の場合） */
     @media (max-width: 600px) {
-      h1 { font-size: 2rem; }
-      .card-header { font-size: 1.3rem; }
-      th, td { font-size: 0.8rem; }
+      header h1 {
+        font-size: 2rem;
+      }
+      .card-header {
+        font-size: 1.3rem;
+      }
+      th, td {
+        font-size: 0.8rem;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
+    <!-- ヘッダー -->
     <header>
-      <h1>マルチアラーム</h1>
+      <h1>Multi Alarm App</h1>
     </header>
     
-    <!-- アラーム設定入力エリア -->
-    <div class="card">
+    <!-- アラーム追加フォーム -->
+    <section id="alarmForm" class="card">
       <div class="card-header">アラーム追加</div>
       <div class="card-body">
+        <!-- 時刻入力 -->
         <div class="form-group">
           <label for="alarmTime">時刻入力</label>
           <input type="time" id="alarmTime">
         </div>
+        <!-- メッセージ入力（必須） -->
         <div class="form-group">
           <label for="alarmMessage">メッセージ</label>
           <input type="text" id="alarmMessage" placeholder="例: 時間になりました。">
         </div>
-        <div class="radio-group">
+        <!-- アラームタイプ選択 -->
+        <div class="form-group radio-group">
+          <label>アラームタイプ：</label>
           <label><input type="radio" name="alarmType" value="daily" checked> 毎日</label>
           <label><input type="radio" name="alarmType" value="weekly"> 曜日指定</label>
           <label><input type="radio" name="alarmType" value="once"> 一回限り</label>
@@ -140,21 +187,22 @@
           <label for="onceDate">日付選択</label>
           <input type="date" id="onceDate">
         </div>
-        <button class="btn" onclick="addAlarm()">アラーム追加</button>
+        <!-- アラーム追加ボタン -->
+        <button class="btn" id="addAlarmBtn" onclick="addAlarm()">アラーム追加</button>
       </div>
-    </div>
+    </section>
     
     <!-- アラーム発動中表示 -->
-    <div id="activeAlarmSection" class="active-alarm" style="display:none;">
-      <h4>アラーム発動中！</h4>
+    <section id="activeAlarmSection" class="active-alarm" style="display:none;">
+      <p>アラーム発動中！</p>
       <button class="btn btn-primary" onclick="stopAlarm()">停止</button>
-    </div>
+    </section>
     
-    <!-- 設定済みアラーム一覧 -->
-    <div class="card">
+    <!-- アラーム一覧 -->
+    <section id="alarmList" class="card">
       <div class="card-header">設定済みアラーム一覧</div>
       <div class="card-body">
-        <table>
+        <table id="alarmsTable">
           <thead>
             <tr>
               <th>#</th>
@@ -167,43 +215,29 @@
               <th>操作</th>
             </tr>
           </thead>
-          <tbody id="alarmsTable"></tbody>
+          <tbody></tbody>
         </table>
       </div>
-    </div>
-    
+    </section>
   </div>
   
   <script>
     /*******************
      * グローバル変数
      *******************/
-    let alarms = [];
-    let alarmIdCounter = 0;
-    let isAlarmRinging = false;
+    let alarms = [];            // アラーム設定オブジェクトの配列
+    let alarmIdCounter = 0;     // アラームIDのカウンター
+    let isAlarmRinging = false; // アラーム発動中フラグ
     const STORAGE_KEY = 'alarms';
 
-    // 通知許可
+    // デスクトップ通知の許可をリクエスト
     if ("Notification" in window && Notification.permission !== "granted") {
       Notification.requestPermission();
     }
-    
+
     /*******************
-     * localStorage 保存／読み込み
+     * localStorageの読み込み
      *******************/
-    function saveAlarms() {
-      const alarmsToSave = alarms.map(alarm => ({
-        id: alarm.id,
-        mode: alarm.mode,
-        time: alarm.time,
-        days: alarm.days,
-        date: alarm.date,
-        message: alarm.message,
-        enabled: alarm.enabled
-      }));
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(alarmsToSave));
-    }
-    
     function loadAlarms() {
       const data = localStorage.getItem(STORAGE_KEY);
       if (data) {
@@ -221,19 +255,32 @@
               active: false
             };
             alarms.push(alarm);
-            if (alarm.id >= alarmIdCounter) { alarmIdCounter = alarm.id + 1; }
-            if (alarm.enabled) { scheduleAlarm(alarm); }
+            if (alarm.id >= alarmIdCounter) {
+              alarmIdCounter = alarm.id + 1;
+            }
+            // スケジュール済みのアラームは再設定
+            if (alarm.enabled) {
+              scheduleAlarm(alarm);
+            }
           });
           updateAlarmsTable();
-        } catch(e) {
-          console.error("保存データの読み込みに失敗:", e);
+        } catch (e) {
+          console.error("読み込み失敗:", e);
         }
       }
     }
     
     /*******************
-     * ユーザー入力表示制御
+     * localStorageへ保存
      *******************/
+    function saveAlarms() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(alarms));
+    }
+    
+    /*******************
+     * ユーザー入力表示の制御
+     *******************/
+    // アラームタイプ選択時に追加オプションの表示を切り替える
     document.querySelectorAll('input[name="alarmType"]').forEach(radio => {
       radio.addEventListener('change', function() {
         const type = this.value;
@@ -243,7 +290,7 @@
     });
     
     /*******************
-     * アラーム追加・スケジュール
+     * アラーム追加処理
      *******************/
     function addAlarm() {
       const timeInput = document.getElementById('alarmTime').value;
@@ -267,15 +314,18 @@
         enabled: true,
         active: false
       };
+      // 曜日指定の場合
       if (alarmType === 'weekly') {
         const checkedDays = Array.from(document.querySelectorAll('#weeklyOptions input[type="checkbox"]:checked'))
-                             .map(cb => parseInt(cb.value, 10));
+          .map(cb => parseInt(cb.value, 10));
         if (checkedDays.length === 0) {
           alert("曜日指定の場合、少なくとも1つの曜日を選択してください。");
           return;
         }
         alarm.days = checkedDays;
-      } else if (alarmType === 'once') {
+      }
+      // 一回限りの場合
+      if (alarmType === 'once') {
         const onceDate = document.getElementById('onceDate').value;
         if (!onceDate) {
           alert("一回限りの場合、日付を選択してください。");
@@ -285,25 +335,38 @@
       }
       alarms.push(alarm);
       alarmIdCounter++;
-      if (alarm.enabled) { scheduleAlarm(alarm); }
+      // スケジュール登録と一覧更新
+      if (alarm.enabled) {
+        scheduleAlarm(alarm);
+      }
       updateAlarmsTable();
       saveAlarms();
       alert("アラームを追加しました。");
     }
     
+    /*******************
+     * 曜日数値を日本語に変換
+     *******************/
     function convertDaysToJapanese(days) {
       const dayNames = ["日", "月", "火", "水", "木", "金", "土"];
-      return days.map(d => dayNames[d] || d).join("、");
+      return days.map(d => dayNames[d]).join("、");
     }
     
+    /*******************
+     * 次回実行時刻の計算
+     *******************/
     function computeNextAlarmTime(alarm) {
       const now = new Date();
       const [hour, minute] = alarm.time.split(":").map(Number);
       let nextTime = null;
       if (alarm.mode === 'daily') {
+        // 毎日の場合
         nextTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, minute, 0);
-        if (nextTime <= now) nextTime.setDate(nextTime.getDate() + 1);
+        if (nextTime <= now) {
+          nextTime.setDate(nextTime.getDate() + 1);
+        }
       } else if (alarm.mode === 'weekly') {
+        // 曜日指定の場合：次の対象曜日を探す
         let daysAhead = null;
         for (let i = 0; i < 7; i++) {
           let potential = new Date(now);
@@ -312,8 +375,14 @@
             if (i === 0) {
               let currentMinutes = now.getHours() * 60 + now.getMinutes();
               let alarmMinutes = hour * 60 + minute;
-              if (alarmMinutes > currentMinutes) { daysAhead = i; break; }
-            } else { daysAhead = i; break; }
+              if (alarmMinutes > currentMinutes) {
+                daysAhead = i;
+                break;
+              }
+            } else {
+              daysAhead = i;
+              break;
+            }
           }
         }
         if (daysAhead === null) daysAhead = 7;
@@ -321,6 +390,7 @@
         nextTime.setDate(now.getDate() + daysAhead);
         nextTime.setHours(hour, minute, 0, 0);
       } else if (alarm.mode === 'once') {
+        // 一回限りの場合
         const [year, month, day] = alarm.date.split("-").map(Number);
         nextTime = new Date(year, month - 1, day, hour, minute, 0);
         if (nextTime <= now) return null;
@@ -328,6 +398,9 @@
       return nextTime;
     }
     
+    /*******************
+     * アラームのスケジューリング
+     *******************/
     function scheduleAlarm(alarm) {
       if (!alarm.enabled) return;
       const nextTime = computeNextAlarmTime(alarm);
@@ -337,6 +410,7 @@
       const timeout = nextTime.getTime() - now.getTime();
       alarm.timerId = setTimeout(() => {
         triggerAlarm(alarm.id);
+        // 毎日または曜日指定の場合は再スケジュール
         if (alarm.mode === 'daily' || alarm.mode === 'weekly') {
           scheduleAlarm(alarm);
           saveAlarms();
@@ -349,9 +423,13 @@
       }, timeout);
     }
     
+    /*******************
+     * アラーム一覧の更新（テーブル表示）
+     *******************/
     function updateAlarmsTable() {
       const tbody = document.getElementById("alarmsTable").getElementsByTagName("tbody")[0];
       tbody.innerHTML = "";
+      // 次回実行時刻でソート（nextTimeが無い場合は後ろへ）
       const sortedAlarms = alarms.slice().sort((a, b) => {
         const aTime = a.nextTime ? new Date(a.nextTime).getTime() : Infinity;
         const bTime = b.nextTime ? new Date(b.nextTime).getTime() : Infinity;
@@ -362,20 +440,35 @@
         row.className = alarm.active ? "active" : "upcoming";
         row.insertCell(0).innerText = index + 1;
         row.insertCell(1).innerText = alarm.time;
-        row.insertCell(2).innerText = 
-          alarm.mode === "daily" ? "毎日" :
-          alarm.mode === "weekly" ? "曜日指定" : "一回限り";
-        row.insertCell(3).innerText =
-          alarm.mode === "weekly" ? convertDaysToJapanese(alarm.days) :
-          (alarm.mode === "once" ? alarm.date : "-");
+        // タイプ表示
+        let typeText = "";
+        if (alarm.mode === "daily") { typeText = "毎日"; }
+        else if (alarm.mode === "weekly") { typeText = "曜日指定"; }
+        else if (alarm.mode === "once") { typeText = "一回限り"; }
+        row.insertCell(2).innerText = typeText;
+        // 詳細：曜日または日付
+        let detail = "-";
+        if (alarm.mode === "weekly") {
+          detail = convertDaysToJapanese(alarm.days);
+        } else if (alarm.mode === "once") {
+          detail = alarm.date;
+        }
+        row.insertCell(3).innerText = detail;
+        // メッセージ
         row.insertCell(4).innerText = alarm.message;
+        // 次回実行
         row.insertCell(5).innerText = alarm.nextTime ? alarm.nextTime.toLocaleString() : "-";
+        // 有効／無効切替（チェックボックス）
         const enableCell = row.insertCell(6);
         enableCell.innerHTML = `<input type="checkbox" id="toggle_${alarm.id}" onchange="toggleAlarmState(${alarm.id})" ${alarm.enabled ? "checked" : ""}>`;
+        // 操作（削除ボタン）
         row.insertCell(7).innerHTML = `<button class="btn btn-danger" onclick="removeAlarm(${alarm.id})">削除</button>`;
       });
     }
     
+    /*******************
+     * 有効／無効の切替処理
+     *******************/
     function toggleAlarmState(id) {
       const alarm = alarms.find(a => a.id === id);
       if (!alarm) return;
@@ -394,6 +487,9 @@
       updateAlarmsTable();
     }
     
+    /*******************
+     * アラーム削除処理
+     *******************/
     function removeAlarm(id) {
       const idx = alarms.findIndex(a => a.id === id);
       if (idx !== -1) {
@@ -404,43 +500,61 @@
       }
     }
     
-    // 音声合成による繰り返し発話
+    /*******************
+     * SpeechSynthesisを使った音声の繰り返し読み上げ
+     *******************/
     function repeatSpeakAlarm(message) {
       if (!isAlarmRinging) return;
-      const utterance = new SpeechSynthesisUtterance(message);
+      let utterance = new SpeechSynthesisUtterance(message);
       utterance.lang = "ja-JP";
       utterance.onend = function() {
-        if (isAlarmRinging) { repeatSpeakAlarm(message); }
+        if (isAlarmRinging) {
+          repeatSpeakAlarm(message);
+        }
       };
       speechSynthesis.speak(utterance);
     }
     
+    /*******************
+     * アラーム発動処理（通知＋音声合成）
+     *******************/
     function triggerAlarm(id) {
       const alarm = alarms.find(a => a.id === id);
       if (!alarm || !alarm.enabled) return;
+      // 発動中でなければ
       if (!isAlarmRinging) {
         isAlarmRinging = true;
         document.getElementById("activeAlarmSection").style.display = "block";
+        // デスクトップ通知
         if ("Notification" in window && Notification.permission === "granted") {
           new Notification("アラーム発動", { body: alarm.message });
         }
+        // 音声合成でメッセージを繰り返し読み上げ
         repeatSpeakAlarm(alarm.message);
       }
       alarm.active = true;
       updateAlarmsTable();
     }
     
+    /*******************
+     * アラーム停止処理
+     *******************/
     function stopAlarm() {
       if (isAlarmRinging) {
         isAlarmRinging = false;
-        speechSynthesis.cancel();
+        speechSynthesis.cancel();  // 現在の読み上げを停止
         document.getElementById("activeAlarmSection").style.display = "none";
         alarms.forEach(a => { if (a.active) a.active = false; });
         updateAlarmsTable();
       }
     }
     
-    window.addEventListener("load", () => { loadAlarms(); });
+    /*******************
+     * 初回読み込み時の処理
+     *******************/
+    window.addEventListener("load", () => {
+      loadAlarms();
+    });
   </script>
 </body>
 </html>
