@@ -401,7 +401,13 @@
     function updateAlarmsTable() {
       const tbody = document.getElementById("alarmsTable").getElementsByTagName("tbody")[0];
       tbody.innerHTML = "";
-      alarms.forEach((alarm, index) => {
+      // 次回実行時刻順にソート（次回実行時刻がない場合は後ろへ）
+      const sortedAlarms = alarms.slice().sort((a, b) => {
+        const aTime = a.nextTime ? new Date(a.nextTime).getTime() : Infinity;
+        const bTime = b.nextTime ? new Date(b.nextTime).getTime() : Infinity;
+        return aTime - bTime;
+      });
+      sortedAlarms.forEach((alarm, index) => {
         const row = tbody.insertRow();
         row.className = alarm.active ? "active" : "upcoming";
         row.insertCell(0).innerText = index + 1;
@@ -413,7 +419,7 @@
           alarm.mode === "weekly" ? ("[ " + (alarm.days || []).join(", ") + " ]") :
           (alarm.mode === "once" ? alarm.date : "-");
         row.insertCell(4).innerText = alarm.nextTime ? alarm.nextTime.toLocaleString() : "-";
-        // 有効／無効切替（チェックボックス）を追加
+        // 有効／無効切替（チェックボックス）
         const enableCell = row.insertCell(5);
         enableCell.innerHTML = `<input type="checkbox" id="toggle_${alarm.id}" onchange="toggleAlarmState(${alarm.id})" ${alarm.enabled ? "checked" : ""}>`;
         row.insertCell(6).innerHTML = `<button class="delete" onclick="removeAlarm(${alarm.id})">削除</button>`;
