@@ -39,7 +39,8 @@
       margin-right: 0.5rem;
     }
     .config input[type="time"],
-    .config input[type="date"] {
+    .config input[type="date"],
+    .config input[type="text"] {
       font-size: 1rem;
       padding: 0.3rem;
       border: none;
@@ -141,6 +142,11 @@
       <label for="alarmTime">時刻入力:</label>
       <input type="time" id="alarmTime">
     </div>
+    <!-- メッセージ入力フィールドを追加 -->
+    <div>
+      <label for="alarmMessage">メッセージ:</label>
+      <input type="text" id="alarmMessage" placeholder="例: 時間になりました。">
+    </div>
     <fieldset>
       <legend>アラームタイプ</legend>
       <label><input type="radio" name="alarmType" value="daily" checked> 毎日</label>
@@ -173,6 +179,7 @@
           <th>時刻</th>
           <th>タイプ</th>
           <th>詳細</th>
+          <th>メッセージ</th>
           <th>次回実行</th>
           <th>有効</th>
           <th>操作</th>
@@ -210,6 +217,7 @@
           time: alarm.time,
           days: alarm.days,
           date: alarm.date,
+          message: alarm.message,
           enabled: alarm.enabled
         };
       });
@@ -227,6 +235,7 @@
               time: alarmData.time,
               days: alarmData.days || [],
               date: alarmData.date || null,
+              message: alarmData.message,
               enabled: alarmData.enabled,
               active: false
             };
@@ -261,8 +270,13 @@
      *******************/
     function addAlarm() {
       const timeInput = document.getElementById('alarmTime').value;
+      const messageInput = document.getElementById('alarmMessage').value.trim();
       if (!timeInput) {
         alert("時刻を入力してください。");
+        return;
+      }
+      if (!messageInput) {
+        alert("メッセージを入力してください。");
         return;
       }
       const alarmType = document.querySelector('input[name="alarmType"]:checked').value;
@@ -272,6 +286,7 @@
         time: timeInput,
         days: [],
         date: null,
+        message: messageInput,
         enabled: true,  // デフォルトは有効
         active: false
       };
@@ -396,11 +411,13 @@
         row.insertCell(3).innerText = 
           alarm.mode === "weekly" ? convertDaysToJapanese(alarm.days) :
           (alarm.mode === "once" ? alarm.date : "-");
-        row.insertCell(4).innerText = alarm.nextTime ? alarm.nextTime.toLocaleString() : "-";
+        // 新規：メッセージ列
+        row.insertCell(4).innerText = alarm.message;
+        row.insertCell(5).innerText = alarm.nextTime ? alarm.nextTime.toLocaleString() : "-";
         // 有効／無効切替（チェックボックス）
-        const enableCell = row.insertCell(5);
+        const enableCell = row.insertCell(6);
         enableCell.innerHTML = `<input type="checkbox" id="toggle_${alarm.id}" onchange="toggleAlarmState(${alarm.id})" ${alarm.enabled ? "checked" : ""}>`;
-        row.insertCell(6).innerHTML = `<button class="delete" onclick="removeAlarm(${alarm.id})">削除</button>`;
+        row.insertCell(7).innerHTML = `<button class="delete" onclick="removeAlarm(${alarm.id})">削除</button>`;
       });
     }
     
@@ -437,8 +454,8 @@
     /*******************
      * 音声再生（SpeechSynthesis）によるアラーム発動処理
      *******************/
-    function speakAlarmMessage() {
-      const utterance = new SpeechSynthesisUtterance("時間になりました。");
+    function speakAlarmMessage(message) {
+      const utterance = new SpeechSynthesisUtterance(message);
       utterance.lang = "ja-JP";
       speechSynthesis.speak(utterance);
     }
@@ -450,8 +467,8 @@
       if (!isAlarmRinging) {
         isAlarmRinging = true;
         document.getElementById("activeAlarmSection").style.display = "block";
-        // 音声合成でデフォルトメッセージを読み上げる
-        speakAlarmMessage();
+        // 設定されたメッセージで音声合成を実行
+        speakAlarmMessage(alarm.message);
       }
       alarm.active = true;
       updateAlarmsTable();
@@ -459,7 +476,7 @@
     
     function stopAlarm() {
       if (isAlarmRinging) {
-        // speechSynthesis は停止APIがないため、実質的に読み上げ中の次の発話まで待つ
+        // speechSynthesis の停止 API はないため、次の発話まで待機
         isAlarmRinging = false;
         document.getElementById("activeAlarmSection").style.display = "none";
         alarms.forEach(a => { if(a.active) a.active = false; });
